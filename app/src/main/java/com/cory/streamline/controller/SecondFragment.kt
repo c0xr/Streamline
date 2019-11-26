@@ -1,9 +1,9 @@
 package com.cory.streamline.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import com.cory.streamline.R
 import com.cory.streamline.model.ImageUrlFetcher
 import com.cory.streamline.util.getBaseUrl
-import kotlinx.android.synthetic.main.fragment_main.*
 
 class SecondFragment : Fragment() {
 
@@ -22,12 +21,18 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v=inflater.inflate(R.layout.fragment_second,container,false)
-        val button: Button =v.findViewById(R.id.button2)
+
+        val button: Button =v.findViewById(R.id.button)
+        val button2 = v.findViewById<Button>(R.id.button2)
         button.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
                 .replace(R.id.fragment_container, MainFragment())
                 .commit()
+        }
+
+        button2.setOnClickListener {
+            startActivity(Intent(activity,SecondActivity::class.java))
         }
 
         val handler=object : Handler() {

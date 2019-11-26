@@ -16,7 +16,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v=inflater.inflate(R.layout.fragment_main,container,false)
-        val button: Button =v.findViewById(R.id.button2)
+        val button: Button =v.findViewById(R.id.button)
         button.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
