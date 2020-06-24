@@ -1,4 +1,4 @@
-package com.cory.streamline.home
+package com.cory.streamline.gallery
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.cory.streamline.R
+import com.cory.streamline.home.MainFragment
 import com.cory.streamline.model.ImageUrlFetcher
 import com.cory.streamline.util.getBaseUrl
 

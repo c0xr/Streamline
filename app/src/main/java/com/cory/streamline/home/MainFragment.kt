@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.cory.streamline.R
+import com.cory.streamline.gallery.SecondFragment
 
 class MainFragment : Fragment() {
 
