@@ -1,6 +1,5 @@
-package com.cory.streamline.controller
+package com.cory.streamline.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -27,12 +26,14 @@ class SecondFragment : Fragment() {
         button.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-                .replace(R.id.fragment_container, MainFragment())
+                .replace(R.id.fragment_container,
+                    MainFragment()
+                )
                 .commit()
         }
 
         button2.setOnClickListener {
-            startActivity(Intent(activity,SecondActivity::class.java))
+
         }
 
         val handler=object : Handler() {

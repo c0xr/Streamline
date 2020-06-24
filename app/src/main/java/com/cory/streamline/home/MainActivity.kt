@@ -1,4 +1,4 @@
-package com.cory.streamline.controller
+package com.cory.streamline.home
 
 import android.os.Bundle
 import androidx.core.view.GravityCompat
@@ -10,10 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import cn.bmob.v3.Bmob
-import cn.bmob.v3.BmobUser
-import cn.bmob.v3.exception.BmobException
-import cn.bmob.v3.listener.SaveListener
 import com.cory.streamline.R
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,7 +17,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Bmob.initialize(this, "id")
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -44,7 +39,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportFragmentManager.findFragmentById(R.id.fragment_container)?:
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-                .add(R.id.fragment_container, MainFragment())
+                .add(R.id.fragment_container,
+                    MainFragment()
+                )
                 .commit()
     }
 

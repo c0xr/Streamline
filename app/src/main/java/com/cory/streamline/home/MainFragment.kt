@@ -1,4 +1,4 @@
-package com.cory.streamline.controller
+package com.cory.streamline.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,9 @@ class MainFragment : Fragment() {
         button.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-                .replace(R.id.fragment_container, SecondFragment())
+                .replace(R.id.fragment_container,
+                    SecondFragment()
+                )
                 .commit()
         }
         return v
