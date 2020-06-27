@@ -1,13 +1,14 @@
 package com.cory.streamline.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.cory.streamline.R
-import com.cory.streamline.gallery.SecondFragment
+import com.cory.streamline.gallery.GalleryFragment
 
 class MainFragment : Fragment() {
 
@@ -22,10 +23,11 @@ class MainFragment : Fragment() {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
                 .replace(R.id.fragment_container,
-                    SecondFragment()
+                    GalleryFragment()
                 )
                 .commit()
         }
+
         return v
     }
 }

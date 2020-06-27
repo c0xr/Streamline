@@ -1,6 +1,7 @@
 package com.cory.streamline.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
 import com.cory.streamline.R
+import com.cory.streamline.util.initToast
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -18,6 +20,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initToast(applicationContext)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
