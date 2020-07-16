@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cory.streamline.R
+import com.cory.streamline.detail.DetailFragment
 import com.cory.streamline.model.CATEGORY_POPULAR
 import com.cory.streamline.model.SOURCE_FREEPIK
 import com.cory.streamline.util.log
@@ -84,6 +85,16 @@ class GalleryFragment : Fragment(), IGalleryView {
         }
         recyclerView.addOnScrollListener(listener)
     }
+
+    fun startDetailFragment(transitionName:String,thumbnailUrl:String){
+        val fragment=DetailFragment.newInstance(transitionName,thumbnailUrl)
+        activity!!.supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
+            .add(R.id.fragment_container,fragment)
+            .addToBackStack("Transition")
+            .commit()
+    }
+
     companion object{
         val ARG_WEB_NAME="webName"
         fun newIntent(webName:String):GalleryFragment{
@@ -93,7 +104,5 @@ class GalleryFragment : Fragment(), IGalleryView {
             fragment.arguments=bundle
             return fragment
         }
-
-
     }
 }

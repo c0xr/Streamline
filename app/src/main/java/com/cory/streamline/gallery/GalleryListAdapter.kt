@@ -1,19 +1,22 @@
 package com.cory.streamline.gallery
 
-import android.animation.Animator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Transition
+import androidx.transition.TransitionInflater
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cory.streamline.R
+import com.cory.streamline.detail.DetailFragment
+import com.cory.streamline.home.MainActivity
 import com.cory.streamline.util.toast
+
 
 class GalleryListAdapter(var thumbnailUrls: MutableList<String>, private val context: Context) :
     RecyclerView.Adapter<GalleryListAdapter.ThumbnailHolder>() {
@@ -29,7 +32,12 @@ class GalleryListAdapter(var thumbnailUrls: MutableList<String>, private val con
         }
 
         override fun onClick(v: View?) {
-            toast("click image!")
+            imageView.transitionName="image$adapterPosition"
+            toast("tran "+imageView.transitionName)
+            val activity=itemView.context as AppCompatActivity
+            val fragment=activity.supportFragmentManager
+                .findFragmentByTag(MainActivity.FRAGMENT_GALLERY_TAG) as GalleryFragment
+            fragment.startDetailFragment(imageView.transitionName,thumbnailUrl)
         }
     }
 

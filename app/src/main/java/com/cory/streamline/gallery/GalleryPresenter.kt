@@ -15,13 +15,13 @@ class GalleryPresenter(
     var sourceString: String,
     var category: String
 ) : IGalleryPresenter {
-    private lateinit var baseUrl: String
     private var disposable: Disposable? = null
     private var page = 1
 
     override fun fetchThumbnails() {
-        lateinit var source: Fetchable
-        lateinit var categoryPara: String
+        val source: Fetchable
+        val baseUrl: String
+        val categoryPara: String
         try {
             source = getSource()
             baseUrl = source.getBaseUrl()
@@ -47,9 +47,9 @@ class GalleryPresenter(
 
                 override fun onNext(t: ResponseBody) {
                     val docString = t.string()
-                    log("onNext:$docString")
+                    log("onNext,doc:$docString")
                     val thumbnailUrls = source.extractImagesFrom(docString)
-                    thumbnailUrls.forEach { log("onNext:$it") }
+                    thumbnailUrls.forEach { log("onNext,element:$it") }
                     galleryView?.onFetchingCompleted(thumbnailUrls)
                     page++
                 }
@@ -63,8 +63,9 @@ class GalleryPresenter(
     }
 
     override fun fetchMoreThumbnails() {
-        lateinit var source: Fetchable
-        lateinit var categoryPara: String
+        val source: Fetchable
+        val baseUrl: String
+        val categoryPara: String
         try {
             source = getSource()
             baseUrl = source.getBaseUrl()
@@ -112,9 +113,9 @@ class GalleryPresenter(
 
     private fun getSource(): Fetchable =
         when (sourceString) {
-            SOURCE_WALLHAVEN -> WallhevenSource()
-            SOURCE_PIXABAY -> PixabaySource()
-            SOURCE_FREEPIK -> FreepikSource()
+            SOURCE_WALLHAVEN -> WallhevenSource
+            SOURCE_PIXABAY -> PixabaySource
+            SOURCE_FREEPIK -> FreepikSource
             else -> throw SourceNotFoundException(sourceString)
         }
 

@@ -18,7 +18,9 @@ import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.util.initToast
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    companion object{
+        val FRAGMENT_GALLERY_TAG="fragment gallery tag"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

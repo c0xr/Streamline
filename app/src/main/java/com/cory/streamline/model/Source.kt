@@ -8,10 +8,8 @@ const val SOURCE_FREEPIK = "FreepikSource"
 const val CATEGORY_LATEST = "Latest"
 const val CATEGORY_POPULAR = "Popular"
 
-class WallhevenSource : Fetchable {
-    companion object {
-        const val BASE_URL = "https://wallhaven.cc/"
-    }
+object WallhevenSource : Fetchable {
+    private const val BASE_URL = "https://wallhaven.cc/"
 
     override fun getBaseUrl(): String = BASE_URL
 
@@ -24,12 +22,12 @@ class WallhevenSource : Fetchable {
         val elements = doc.select("img[src~=(?i)\\.(png|jpe?g)]")
         return List(elements.size) { elements[it].attr("src") }
     }
+
+    override fun getFullSizeUrl(thumbnailUrl: String) = ""
 }
 
-class PixabaySource : Fetchable {
-    companion object {
-        const val BASE_URL = "https://pixabay.com/"
-    }
+object PixabaySource : Fetchable {
+    private const val BASE_URL = "https://pixabay.com/"
 
     override fun getBaseUrl(): String = BASE_URL
 
@@ -42,12 +40,12 @@ class PixabaySource : Fetchable {
         val elements = doc.select("img[src~=(?i)\\.(png|jpe?g)]")
         return List(elements.size) { elements[it].attr("src") }
     }
+
+    override fun getFullSizeUrl(thumbnailUrl: String) = ""
 }
 
-class FreepikSource : Fetchable {
-    companion object {
-        const val BASE_URL = "https://www.freepik.com/"
-    }
+object FreepikSource : Fetchable {
+    private const val BASE_URL = "https://www.freepik.com/"
 
     override fun getBaseUrl(): String = BASE_URL
 
@@ -59,5 +57,9 @@ class FreepikSource : Fetchable {
         val doc = Jsoup.parse(docString)
         val elements = doc.select("img[src~=(?i)\\.(jpe?g)]")
         return List(elements.size) { elements[it].attr("src") }
+    }
+
+    override fun getFullSizeUrl(thumbnailUrl: String): String {
+        return ""
     }
 }
