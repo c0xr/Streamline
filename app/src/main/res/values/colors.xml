@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="rippleBlue">#0062FF</color>
+    <color name="white">#FFFFFF</color>
     <color name="blue">#1988F7</color>
     <color name="shallowBlue">#92BEED</color>
     <color name="rippleGrey">#80AEAEAE</color>
+    <color name="transparent">#00000000</color>
 </resources>

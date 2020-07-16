@@ -53,7 +53,7 @@
         </LinearLayout>
 
         <Button
-                android:id="@+id/button"
+                android:id="@+id/button_login"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/nav_header_login_button_start_margin"

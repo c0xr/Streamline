@@ -7,4 +7,7 @@
     <dimen name="nav_header_login_button_corner_radius">10dp</dimen>
     <dimen name="nav_header_login_button_stroke_width">2dp</dimen>
     <dimen name="nav_header_login_button_start_margin">32dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fragment_horizontal_margin">16dp</dimen>
+    <dimen name="fragment_vertical_margin">16dp</dimen>
 </resources>

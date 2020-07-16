@@ -9,8 +9,19 @@
 
     <string name="menu_gallery">Gallery</string>
     <string name="nav_haeder_login">现在登录</string>
+    <string name="nav_haeder_logged">已登录</string>
     <string name="menu_others">Others</string>
     <string name="menu_about">关于</string>
     <string name="menu_setting">设置</string>
     <string name="menu_history">搜寻记录</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">邮箱</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">欢迎！</string>
+    <string name="invalid_username">账户须是有效邮箱地址</string>
+    <string name="invalid_password">密码须在6到15位之间</string>
+    <string name="login_failed">登录失败</string>
+    <string name="register">没有账号？点击注册</string>
 </resources>

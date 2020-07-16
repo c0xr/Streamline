@@ -1,7 +1,7 @@
 package com.cory.streamline.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -10,8 +10,11 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import com.cory.streamline.R
+import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.util.initToast
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -20,9 +23,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initToast(applicationContext)
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -38,6 +39,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        val loginButton=navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
+
+        loginButton.setOnClickListener(View.OnClickListener {
+            val intent=Intent(this,LoginActivity::class.java)
+            startActivity(intent)
+            drawerLayout.closeDrawer(GravityCompat.START)
+
+        })
 
         //fragment
         supportFragmentManager.findFragmentById(R.id.fragment_container)?:

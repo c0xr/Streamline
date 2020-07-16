@@ -1,9 +1,9 @@
 package com.cory.streamline.gallery
 
+
 import com.cory.streamline.model.*
 import com.cory.streamline.util.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.*
@@ -36,7 +36,7 @@ class GalleryPresenter(
             .getThumbnails(query = categoryPara, page = page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ResponseBody> {
+            .subscribe(object : io.reactivex.rxjava3.core.Observer<ResponseBody> {
                 override fun onComplete() {
                     log("onComplete")
                 }
@@ -79,7 +79,7 @@ class GalleryPresenter(
             .getThumbnails(query = categoryPara, page = page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ResponseBody> {
+            .subscribe(object : io.reactivex.rxjava3.core.Observer<ResponseBody> {
                 override fun onComplete() {
                     log("onComplete")
                 }

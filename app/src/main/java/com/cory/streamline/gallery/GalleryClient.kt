@@ -1,11 +1,12 @@
 package com.cory.streamline.gallery
 
-import com.cory.streamline.util.log
+
+
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import java.io.IOException
+
 
 
 class GalleryClient private constructor() {

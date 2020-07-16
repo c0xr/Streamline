@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,14 +16,11 @@ import com.cory.streamline.util.toast
 
 
 class GalleryFragment : Fragment(), IGalleryView {
-    private val galleryPresenter: IGalleryPresenter = GalleryPresenter(
-        this,
-        SOURCE_FREEPIK,
-        CATEGORY_POPULAR
-    )
+    private lateinit var galleryPresenter: IGalleryPresenter
+
     private lateinit var galleryListAdapter: GalleryListAdapter
     private lateinit var recyclerView: RecyclerView
-    private var listener = object : RecyclerView.OnScrollListener() {
+    private  var listener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
@@ -34,11 +32,22 @@ class GalleryFragment : Fragment(), IGalleryView {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        galleryPresenter = GalleryPresenter(
+                this,
+        arguments?.getSerializable(ARG_WEB_NAME).toString(),
+        CATEGORY_POPULAR
+        )
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Toast.makeText(context,arguments?.getSerializable(ARG_WEB_NAME).toString(),Toast.LENGTH_SHORT).show()
         val v = inflater.inflate(R.layout.fragment_gallery, container, false)
         recyclerView = v.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
@@ -74,5 +83,17 @@ class GalleryFragment : Fragment(), IGalleryView {
             recyclerView.smoothScrollToPosition(itemsCount+6)
         }
         recyclerView.addOnScrollListener(listener)
+    }
+    companion object{
+        val ARG_WEB_NAME="webName"
+        fun newIntent(webName:String):GalleryFragment{
+            val bundle=Bundle()
+            bundle.putSerializable(ARG_WEB_NAME,webName)
+            val fragment=GalleryFragment()
+            fragment.arguments=bundle
+            return fragment
+        }
+
+
     }
 }
