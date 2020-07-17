@@ -41,7 +41,7 @@ class MainFragment : Fragment() {
                 when(position){
                     1->activity!!.supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-                        .replace(R.id.fragment_container,
+                        .add(R.id.fragment_container,
                             galleryFragment,
                             MainActivity.FRAGMENT_GALLERY_TAG
                         ).addToBackStack(null)
