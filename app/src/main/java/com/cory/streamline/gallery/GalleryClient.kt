@@ -2,6 +2,7 @@ package com.cory.streamline.gallery
 
 
 
+import com.cory.streamline.model.web.service.WebService
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.*
 import retrofit2.Retrofit
@@ -10,7 +11,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 
 
 class GalleryClient private constructor() {
-    private val thumbnailPageService: GalleryService
+    private val thumbnailPageService: WebService
 
     fun getThumbnails(query: String, page: Int): Observable<ResponseBody> {
         return thumbnailPageService.getThumbnails(query = query,page = page)
@@ -48,6 +49,6 @@ class GalleryClient private constructor() {
 //            .client(client)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-        thumbnailPageService = retrofit.create(GalleryService::class.java)
+        thumbnailPageService = retrofit.create(WebService::class.java)
     }
 }
