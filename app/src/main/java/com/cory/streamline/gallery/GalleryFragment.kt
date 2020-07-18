@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cory.streamline.R
 import com.cory.streamline.detail.DetailFragment
 import com.cory.streamline.model.CATEGORY_POPULAR
-import com.cory.streamline.model.SOURCE_FREEPIK
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 
@@ -26,7 +25,7 @@ class GalleryFragment : Fragment(), IGalleryView {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
                 recyclerView.removeOnScrollListener(this)
-                galleryPresenter.fetchMoreThumbnails()
+//                galleryPresenter.fetchMoreThumbnails()
                 toast("fetching more image..")
                 log("fetching more image..")
             }
@@ -57,7 +56,7 @@ class GalleryFragment : Fragment(), IGalleryView {
         if (adapter == null) {
             galleryListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
             recyclerView.adapter = galleryListAdapter
-            galleryPresenter.fetchThumbnails()
+            galleryPresenter.getLastedResults()
         } else {
             galleryListAdapter = adapter
         }
@@ -66,7 +65,7 @@ class GalleryFragment : Fragment(), IGalleryView {
     }
 
     override fun onDestroy() {
-        galleryPresenter.clearReference()
+        galleryPresenter.onDestroy()
         super.onDestroy()
     }
 
