@@ -1,8 +1,9 @@
 package com.cory.streamline.model.web
 
-interface WebRepo {
-    var imageSources: ArrayList<ImageSource>
+import java.io.Serializable
 
+interface Fetchable {
     fun getImageSources(): List<ImageSource>
+
     fun getSize(): Int
 }

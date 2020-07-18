@@ -1,5 +1,6 @@
 package com.cory.streamline.home
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.GravityCompat
@@ -18,8 +19,8 @@ import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.util.initToast
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    companion object{
-        val FRAGMENT_GALLERY_TAG="fragment gallery tag"
+    companion object {
+        val FRAGMENT_GALLERY_TAG = "fragment gallery tag"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,23 +42,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        val loginButton=navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
+        val loginButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
 
         loginButton.setOnClickListener(View.OnClickListener {
-            val intent=Intent(this,LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             drawerLayout.closeDrawer(GravityCompat.START)
 
         })
 
         //fragment
-        supportFragmentManager.findFragmentById(R.id.fragment_container)?:
-            supportFragmentManager.beginTransaction()
+        supportFragmentManager.findFragmentById(R.id.fragment_container)
+            ?: supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-                .add(R.id.fragment_container,
+                .add(
+                    R.id.fragment_container,
                     MainFragment()
                 )
                 .commit()
+
+        val permissions = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        requestPermissions(permissions, 1)
     }
 
     override fun onBackPressed() {
@@ -84,7 +92,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show()
                 true
             }
-            R.id.action_star ->true
+            R.id.action_star -> true
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -1,8 +1,10 @@
 package com.cory.streamline.gallery
 
-interface IGalleryView {
-    fun onFetchingCompleted(thumbnails:List<String>)
+import com.cory.streamline.model.web.ImageSource
 
-    fun onFetchingMoreCompleted(thumbnails:List<String>)
+interface IGalleryView {
+    fun onImagesFetched(imageSources: List<ImageSource>)
+
+    fun onMoreImagesFetched(imageSources: List<ImageSource>)
 
 }

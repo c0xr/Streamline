@@ -1,34 +1,50 @@
 package com.cory.streamline.detail
 
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import androidx.core.util.TimeUtils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomViewTarget
 import com.cory.streamline.R
+import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.util.log
+import com.cory.streamline.util.toast
+import java.io.File
+import java.time.Year
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "transitionName"
-private const val ARG_PARAM2 = "fullSizeUrl"
+private const val ARG_TRANSITION_NAME = "transitionName"
+private const val ARG_IMAGE_SOURCE = "imageSource"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var transitionName: String
+    private lateinit var imageSource: ImageSource
+    private var ioThread: Thread? = null
+
+    companion object {
+        fun newInstance(transitionName: String, imageSource: ImageSource) =
+            DetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TRANSITION_NAME, transitionName)
+                    putSerializable(ARG_IMAGE_SOURCE, imageSource)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            transitionName = it.getString(ARG_TRANSITION_NAME)!!
+            imageSource = it.getSerializable(ARG_IMAGE_SOURCE) as ImageSource
         }
     }
 
@@ -36,33 +52,52 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val v= inflater.inflate(R.layout.fragment_detail, container, false)
+        val v = inflater.inflate(R.layout.fragment_detail, container, false)
         val imageView = v.findViewById<ImageView>(R.id.imageView)
-        imageView.transitionName=param1
-        Glide.with(activity!!)
-            .load(param2)
+        val saveButton = v.findViewById<Button>(R.id.save)
+        imageView.transitionName = transitionName
+        Glide.with(this)
+            .load(imageSource.fullSizeImage)
             .into(imageView)
+        saveButton.setOnClickListener { copyCache() }
         return v
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun copyCache() {
+        if (ioThread == null || !ioThread!!.isAlive) {
+            ioThread = Thread() {
+                val file: File = Glide.with(this)
+                    .asFile()
+                    .load(imageSource.fullSizeImage)
+                    .submit()
+                    .get()
+                val calendar=Calendar.getInstance()
+                val date="${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH)}" +
+                        "-${calendar.get(Calendar.DAY_OF_MONTH)}"
+                val newName="${date}-${file.name.substring(0..5)}.jpg"
+                val newFile = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    newName
+                )
+                if (!newFile.exists()) {
+                    file.copyTo(newFile)
+                    this@DetailFragment.activity?.runOnUiThread {
+                        MediaScannerConnection.scanFile(
+                            activity
+                            , arrayOf(newFile.path)
+                            , arrayOf("image/jpeg")
+                            , null
+                        )
+                        toast("已保存到 ${newFile.path}")
+                    }
+                }else{
+                    this@DetailFragment.activity?.runOnUiThread {
+                        toast("已经存过了，路径 ${newFile.path}")
+                    }
                 }
             }
+            ioThread!!.start()
+        }
     }
+
 }

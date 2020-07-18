@@ -1,7 +1,6 @@
 package com.cory.streamline.model.web
 
-abstract class ClosedWebRepo : WebRepo, Extractable {
-    override var imageSources = ArrayList<ImageSource>()
+abstract class ClosedWebRepo : BaseWebRepo(), Extractable {
     private lateinit var docString: String
 
     override fun getImageSources(): List<ImageSource> {

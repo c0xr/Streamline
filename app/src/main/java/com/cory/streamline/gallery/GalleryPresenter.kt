@@ -1,13 +1,14 @@
 package com.cory.streamline.gallery
 
 
-import com.cory.streamline.model.web.repo.WallhevenRepo
-import com.cory.streamline.model.web.source.WallhevenSource
+import com.cory.streamline.model.exception.CategoryNotFoundException
+import com.cory.streamline.model.web.Fetchable
+import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.util.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.lang.IllegalStateException
 
 
 class GalleryPresenter(
@@ -17,6 +18,7 @@ class GalleryPresenter(
 ) : IGalleryPresenter {
     private var disposable: Disposable? = null
     private var page = 1
+    private val source: WebSource<*> = createWebSourceBy(sourceString)
 
     //    override fun fetchThumbnails() {
 //        val source: Available
@@ -106,14 +108,20 @@ class GalleryPresenter(
 //
 //            })
 //    }
-    override fun getLastedResults() {
-        val source=WallhevenSource()
-        val observables=
-            source.getLatestImageUrls() ?: throw IllegalStateException()
+    override fun getLatestResults() {
+        val observables =
+            source.getLatestImageUrls() ?: throw CategoryNotFoundException("latest")
+        executeUrls(observables)
+    }
 
+    override fun onDestroy() {
+        galleryView = null
+    }
+
+    private fun executeUrls(observables: Observable<out Fetchable>) {
         observables.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : io.reactivex.rxjava3.core.Observer<WallhevenRepo> {
+            .subscribe(object : io.reactivex.rxjava3.core.Observer<Fetchable> {
                 override fun onComplete() {
                     log("onComplete")
                 }
@@ -122,10 +130,10 @@ class GalleryPresenter(
                     log("onSubscribe")
                 }
 
-                override fun onNext(t: WallhevenRepo) {
-                    val thumbnailUrls = t.getImageSources().map { it.thumbnailImage }
-                    thumbnailUrls.forEach { log("onNext,element:$it") }
-                    galleryView?.onFetchingCompleted(thumbnailUrls)
+                override fun onNext(t: Fetchable) {
+                    val sources = t.getImageSources()
+                    sources.forEach { log("onNext,element:\n$it") }
+                    galleryView?.onImagesFetched(sources)
                 }
 
                 override fun onError(e: Throwable) {
@@ -134,10 +142,6 @@ class GalleryPresenter(
                 }
 
             })
-    }
-
-    override fun onDestroy() {
-        galleryView = null
     }
 
     private fun unsubscribeLast() {

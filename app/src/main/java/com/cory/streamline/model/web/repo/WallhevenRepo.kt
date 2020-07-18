@@ -2,12 +2,11 @@ package com.cory.streamline.model.web.repo
 
 import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.model.web.OpenWebRepo
-import com.cory.streamline.model.web.WebRepo
 
 class WallhevenRepo : OpenWebRepo() {
     private lateinit var data: List<Data>
 
-    class Data {
+    private class Data {
         lateinit var path: String
         lateinit var thumbs: Thumbs
 

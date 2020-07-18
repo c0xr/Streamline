@@ -4,7 +4,7 @@ import com.cory.streamline.model.web.service.WebService
 import com.cory.streamline.retrofit.ServiceGenerator
 import io.reactivex.rxjava3.core.Observable
 
-abstract class WebSource<T : WebRepo>(baseUrl: String) {
+abstract class WebSource<T : Fetchable>(baseUrl: String) {
     protected val retrofitService: WebService
 
     init {

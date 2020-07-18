@@ -1,9 +1,9 @@
-package com.cory.streamline.model
+package com.cory.streamline.model.exception
 
 import java.lang.Exception
 
 class SourceNotFoundException(val sourceString: String) : Exception() {
     override fun toString(): String {
-        return "SourceString ($sourceString) can't be parsed"
+        return "SourceString $sourceString can't be parsed"
     }
 }
