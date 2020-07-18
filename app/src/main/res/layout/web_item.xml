@@ -8,9 +8,9 @@
             android:id="@+id/img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:riv_corner_radius="25dp"
+            app:riv_corner_radius="5dp"
             app:riv_border_color="@color/shallowBlue"
-            app:riv_border_width="3dp"
+            app:riv_border_width="2dp"
             tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

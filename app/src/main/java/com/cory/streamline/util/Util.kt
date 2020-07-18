@@ -8,6 +8,7 @@ import org.jsoup.Jsoup
 
 private const val TAG = "StreamlineLog"
 private lateinit var context: Context
+private lateinit var loginContext: Context
 
 fun log(o: Any?) {
     Log.i(TAG, o?.toString() ?: "Object logged is null")
@@ -21,3 +22,12 @@ fun toast(o: Any?) {
 fun initToast(_context: Context) {
     context = _context
 }
+
+fun initLoginContext(context: Context){
+    loginContext=context
+}
+
+fun loginContext():Context{
+    return loginContext
+}
+
