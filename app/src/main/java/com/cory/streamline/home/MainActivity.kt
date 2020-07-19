@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //fragment
         supportFragmentManager.findFragmentById(R.id.fragment_container)
             ?: supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
                 .add(
                     R.id.fragment_container,
                     MainFragment()

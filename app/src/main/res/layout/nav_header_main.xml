@@ -59,7 +59,7 @@
                 android:layout_marginStart="@dimen/nav_header_login_button_start_margin"
                 android:background="@drawable/bg_nav_login_button"
                 android:minHeight="0dp"
-                android:text="@string/nav_haeder_login"
+                android:text="@string/nav_header_login"
                 android:textColor="@android:color/white"
                 android:foreground="@drawable/ripple_effect"/>
     </LinearLayout>

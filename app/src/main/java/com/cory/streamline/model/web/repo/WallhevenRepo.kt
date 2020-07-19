@@ -9,6 +9,9 @@ class WallhevenRepo : OpenWebRepo() {
     private class Data {
         lateinit var path: String
         lateinit var thumbs: Thumbs
+        lateinit var resolution: String
+        lateinit var category: String
+        var file_size: Int = 0
 
         class Thumbs {
             lateinit var small: String
@@ -17,7 +20,13 @@ class WallhevenRepo : OpenWebRepo() {
 
     override fun onCreateImageSource(position: Int): ImageSource {
         val data = data[position]
-        return ImageSource(data.thumbs.small, data.path)
+        return ImageSource(
+            thumbnailImage = data.thumbs.small,
+            fullSizeImage = data.path,
+            resolution = data.resolution,
+            category = data.category,
+            fileSize = data.file_size
+        )
     }
 
     override fun getSize(): Int {

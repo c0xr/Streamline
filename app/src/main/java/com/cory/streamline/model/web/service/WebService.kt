@@ -14,5 +14,14 @@ interface WebService {
     ): Observable<ResponseBody>
 
     @GET("api/v1/search")
-    fun getLastedResultsForWallheven(): Observable<WallhevenRepo>
+    fun getLastedResultsForWallheven(
+        @Query("page") page: Int = 1
+    ): Observable<WallhevenRepo>
+
+    @GET("api/v1/search")
+    fun getToplistResultsForWallheven(
+        @Query("sorting") category: String = "toplist",
+        @Query("page") page: Int = 1
+    ): Observable<WallhevenRepo>
+
 }

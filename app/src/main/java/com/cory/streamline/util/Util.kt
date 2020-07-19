@@ -12,6 +12,7 @@ private lateinit var context: Context
 const val SOURCE_WALLHAVEN = "WallhevenSource"
 const val SOURCE_PIXABAY = "PixabaySource"
 const val SOURCE_FREEPIK = "FreepikSource"
+const val SOURCE_UNSPLASH = "UnsplashSource"
 const val CATEGORY_LATEST = "Latest"
 const val CATEGORY_POPULAR = "Popular"
 private lateinit var loginContext: Context

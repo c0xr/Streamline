@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cory.streamline.R
 import com.cory.streamline.detail.DetailFragment
-import com.cory.streamline.model.CATEGORY_POPULAR
 import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.util.CATEGORY_POPULAR
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.SpinKitView
@@ -26,7 +26,7 @@ class GalleryFragment : Fragment(), IGalleryView {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
                 recyclerView.removeOnScrollListener(this)
-//                galleryPresenter.fetchMoreThumbnails()
+                galleryPresenter.getPopularResults(false)
                 toast("fetching more image..")
                 log("fetching more image..")
             }
@@ -54,7 +54,7 @@ class GalleryFragment : Fragment(), IGalleryView {
         if (adapter == null) {
             galleryListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
             recyclerView.adapter = galleryListAdapter
-            galleryPresenter.getLatestResults()
+            galleryPresenter.getPopularResults(true)
         } else {
             galleryListAdapter = adapter
         }
@@ -73,7 +73,7 @@ class GalleryFragment : Fragment(), IGalleryView {
         galleryListAdapter.imageSources = imageSources.toMutableList()
         galleryListAdapter.notifyDataSetChanged()
         recyclerView.addOnScrollListener(listener)
-        mSpinKit.visibility=View.GONE
+        mSpinKit.visibility = View.GONE
     }
 
     override fun onMoreImagesFetched(imageSources: List<ImageSource>) {
@@ -89,9 +89,14 @@ class GalleryFragment : Fragment(), IGalleryView {
     fun startDetailFragment(transitionName: String, imageSource: ImageSource) {
         val fragment = DetailFragment.newInstance(transitionName, imageSource)
         activity!!.supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.animator.anim_fragment_start, android.R.animator.fade_out)
-            .add(R.id.fragment_container, fragment)
-            .addToBackStack("Transaction")
+            .setCustomAnimations(
+                R.animator.anim_fragment_start,
+                0,
+                0,
+                R.animator.anim_fragment_end
+            )
+            .add(R.id.fragment_container, fragment, "DetailFragment")
+            .addToBackStack("DetailFragment")
             .commit()
     }
 

@@ -8,8 +8,8 @@
     <string name="action_star">Star</string>
 
     <string name="menu_gallery">Gallery</string>
-    <string name="nav_haeder_login">现在登录</string>
-    <string name="nav_haeder_logged">已登录</string>
+    <string name="nav_header_login">现在登录</string>
+    <string name="nav_header_logged">已登录</string>
     <string name="menu_others">Others</string>
     <string name="menu_about">关于</string>
     <string name="menu_setting">设置</string>

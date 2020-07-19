@@ -12,8 +12,7 @@ import android.widget.SimpleAdapter
 import androidx.fragment.app.Fragment
 import com.cory.streamline.R
 import com.cory.streamline.gallery.GalleryFragment
-import com.cory.streamline.model.SOURCE_FREEPIK
-import com.cory.streamline.model.SOURCE_WALLHAVEN
+import com.cory.streamline.util.SOURCE_WALLHAVEN
 import java.lang.IllegalStateException
 import java.util.ArrayList
 
@@ -40,21 +39,23 @@ class MainFragment : Fragment() {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val sourceString = when (position) {
                     0 -> SOURCE_WALLHAVEN
-                    1 -> SOURCE_FREEPIK
+                    1 -> SOURCE_WALLHAVEN
                     else -> throw IllegalStateException("GirdView index $position out of bounds")
                 }
                 val galleryFragment = GalleryFragment.newInstance(sourceString)
                 activity!!.supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.animator.anim_fragment_start,
-                        android.R.animator.fade_out
+                        0,
+                        0,
+                        R.animator.anim_fragment_end
                     )
                     .add(
                         R.id.fragment_container,
                         galleryFragment,
                         MainActivity.FRAGMENT_GALLERY_TAG
                     )
-                    .addToBackStack("Transaction")
+                    .addToBackStack(MainActivity.FRAGMENT_GALLERY_TAG)
                     .commit()
             }
         return v
@@ -62,7 +63,7 @@ class MainFragment : Fragment() {
 
     private fun initData() {
         val icon: IntArray =
-            intArrayOf(R.drawable.ic_fragment_main_wallhaven, R.drawable.ic_fragment_main_freepik)
+            intArrayOf(R.drawable.pic_wallhaven_logo, R.drawable.pic_unsplash_logo)
         for (i in icon) {
             var map = hashMapOf<String, Int>()
             map[KEY_IMG] = i
