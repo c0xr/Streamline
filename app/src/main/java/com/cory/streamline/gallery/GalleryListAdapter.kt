@@ -11,9 +11,8 @@ import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cory.streamline.R
-import com.cory.streamline.home.MainActivity
+import com.cory.streamline.home.HomeActivity
 import com.cory.streamline.model.web.ImageSource
-import com.cory.streamline.util.toast
 
 
 open class GalleryListAdapter(var imageSources: MutableList<ImageSource>, private val context: Context) :
@@ -33,7 +32,7 @@ open class GalleryListAdapter(var imageSources: MutableList<ImageSource>, privat
             imageView.transitionName="image$adapterPosition"
             val activity=itemView.context as AppCompatActivity
             val fragment=activity.supportFragmentManager
-                .findFragmentByTag(MainActivity.FRAGMENT_GALLERY_TAG) as GalleryFragment
+                .findFragmentByTag(HomeActivity.FRAGMENT_GALLERY_TAG) as GalleryFragment
             fragment.startDetailFragment(imageView.transitionName,imageSource)
         }
     }

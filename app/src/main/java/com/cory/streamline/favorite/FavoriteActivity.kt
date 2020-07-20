@@ -5,11 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cory.streamline.R
-import com.cory.streamline.detail.DetailFragment
-import com.cory.streamline.detail.DetailFragment.Companion.newInstance
-import com.cory.streamline.gallery.GalleryFragment
-import com.cory.streamline.home.MainActivity
-import com.cory.streamline.util.SOURCE_FAVORITE
+import com.cory.streamline.home.HomeActivity
 import com.cory.streamline.util.SOURCE_WALLHAVEN
 
 class FavoriteActivity : AppCompatActivity() {
@@ -32,10 +28,10 @@ class FavoriteActivity : AppCompatActivity() {
             .add(
                 R.id.fragment_container,
                 favoriteFragment,
-                MainActivity.FRAGMENT_GALLERY_TAG
+                HomeActivity.FRAGMENT_GALLERY_TAG
             )
             .commit()
 
-        supportActionBar?.title = "收藏图片"
+        supportActionBar?.title = "我的收藏"
     }
 }

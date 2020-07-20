@@ -3,23 +3,25 @@ package com.cory.streamline.home
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.cory.streamline.R
+import com.cory.streamline.about.AboutActivity
 import com.cory.streamline.favorite.FavoriteActivity
+import com.cory.streamline.history.HistoryActivity
 import com.cory.streamline.login.ui_login.LoginActivity
+import com.cory.streamline.setting.SettingActivity
 import com.cory.streamline.util.initToast
+import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     companion object {
         val FRAGMENT_GALLERY_TAG = "fragment gallery tag"
     }
@@ -45,19 +47,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
         val loginButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
 
-        loginButton.setOnClickListener(View.OnClickListener {
+        loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             drawerLayout.closeDrawer(GravityCompat.START)
-
-        })
+        }
 
         //fragment
         supportFragmentManager.findFragmentById(R.id.fragment_container)
             ?: supportFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    MainFragment()
+                    HomeFragment()
                 )
                 .commit()
 
@@ -89,6 +90,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_gallery -> {
+                val intent = Intent()
+                intent.action = Intent.ACTION_VIEW
+                intent.type = "image/*"
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
                 true
             }
             R.id.action_star -> {
@@ -103,13 +109,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_history -> {
-                // Handle the camera action
+                startActivity(HistoryActivity.newIntent(this))
             }
             R.id.nav_setting -> {
-
+                startActivity(SettingActivity.newIntent(this))
             }
             R.id.nav_about -> {
-
+                startActivity(AboutActivity.newIntent(this))
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

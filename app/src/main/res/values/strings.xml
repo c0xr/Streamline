@@ -7,13 +7,12 @@
     <string name="action_gallery">Gallery</string>
     <string name="action_star">Star</string>
 
-    <string name="menu_gallery">Gallery</string>
     <string name="nav_header_login">现在登录</string>
     <string name="nav_header_logged">已登录</string>
     <string name="menu_others">Others</string>
     <string name="menu_about">关于</string>
     <string name="menu_setting">设置</string>
-    <string name="menu_history">搜寻记录</string>
+    <string name="menu_history">浏览记录</string>
     <!-- Strings related to login -->
     <string name="prompt_email">邮箱</string>
     <string name="prompt_password">密码</string>

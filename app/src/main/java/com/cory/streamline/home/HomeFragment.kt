@@ -17,7 +17,7 @@ import java.lang.IllegalStateException
 import java.util.ArrayList
 
 
-class MainFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var iconList = ArrayList<Map<String, Int>>()
 
@@ -53,9 +53,9 @@ class MainFragment : Fragment() {
                     .add(
                         R.id.fragment_container,
                         galleryFragment,
-                        MainActivity.FRAGMENT_GALLERY_TAG
+                        HomeActivity.FRAGMENT_GALLERY_TAG
                     )
-                    .addToBackStack(MainActivity.FRAGMENT_GALLERY_TAG)
+                    .addToBackStack(HomeActivity.FRAGMENT_GALLERY_TAG)
                     .commit()
             }
         return v
