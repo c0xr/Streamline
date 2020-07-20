@@ -5,18 +5,8 @@ import java.io.Serializable
 data class ImageSource(
     val thumbnailImage: String,
     val fullSizeImage: String,
-    val resolution: String,
-    val category: String,
-    val fileSize: Int
-) : Serializable {
-    constructor(
-        thumbnailImage: String,
-        fullSizeImage: String
-    ) : this(
-        thumbnailImage,
-        fullSizeImage,
-        resolution = "",
-        category = "",
-        fileSize = 0
-    )
-}
+    val resolution: String = "",
+    val category: String = "",
+    val fileSize: Int = 0,
+    val sourceCreatedTime: String = "0000-00-00"
+) : Serializable

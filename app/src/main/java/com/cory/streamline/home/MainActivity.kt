@@ -15,6 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.cory.streamline.R
+import com.cory.streamline.favorite.FavoriteActivity
 import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.util.initToast
 
@@ -88,10 +89,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_gallery -> {
-                Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show()
                 true
             }
-            R.id.action_star -> true
+            R.id.action_star -> {
+                startActivity(FavoriteActivity.newIntent(this))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

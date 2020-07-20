@@ -3,6 +3,7 @@ package com.cory.streamline.util
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.cory.streamline.R
 import com.cory.streamline.model.exception.SourceNotFoundException
 import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.model.web.source.WallhevenSource
@@ -13,6 +14,7 @@ const val SOURCE_WALLHAVEN = "WallhevenSource"
 const val SOURCE_PIXABAY = "PixabaySource"
 const val SOURCE_FREEPIK = "FreepikSource"
 const val SOURCE_UNSPLASH = "UnsplashSource"
+const val SOURCE_FAVORITE = "FavoriteSource"
 const val CATEGORY_LATEST = "Latest"
 const val CATEGORY_POPULAR = "Popular"
 private lateinit var loginContext: Context

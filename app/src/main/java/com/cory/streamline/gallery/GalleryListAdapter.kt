@@ -16,10 +16,10 @@ import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.util.toast
 
 
-class GalleryListAdapter(var imageSources: MutableList<ImageSource>, private val context: Context) :
+open class GalleryListAdapter(var imageSources: MutableList<ImageSource>, private val context: Context) :
     RecyclerView.Adapter<GalleryListAdapter.ThumbnailHolder>() {
 
-    class ThumbnailHolder(
+    open class ThumbnailHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         lateinit var imageSource: ImageSource

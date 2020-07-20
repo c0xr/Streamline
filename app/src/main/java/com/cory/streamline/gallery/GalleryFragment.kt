@@ -16,19 +16,19 @@ import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.SpinKitView
 
 
-class GalleryFragment : Fragment(), IGalleryView {
-    private lateinit var galleryPresenter: IGalleryPresenter
-    private lateinit var galleryListAdapter: GalleryListAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var mSpinKit: SpinKitView
+open class GalleryFragment : Fragment(), IGalleryView {
+    protected lateinit var galleryPresenter: IGalleryPresenter
+    protected lateinit var favoriteListAdapter: GalleryListAdapter
+    protected lateinit var recyclerView: RecyclerView
+    protected lateinit var mSpinKit: SpinKitView
     private var listener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
                 recyclerView.removeOnScrollListener(this)
                 galleryPresenter.getPopularResults(false)
-                toast("fetching more image..")
-                log("fetching more image..")
+                toast("fetching more images..")
+                log("fetching more images..")
             }
         }
     }
@@ -52,11 +52,11 @@ class GalleryFragment : Fragment(), IGalleryView {
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         val adapter = recyclerView.adapter as GalleryListAdapter?
         if (adapter == null) {
-            galleryListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
-            recyclerView.adapter = galleryListAdapter
+            favoriteListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
+            recyclerView.adapter = favoriteListAdapter
             galleryPresenter.getPopularResults(true)
         } else {
-            galleryListAdapter = adapter
+            favoriteListAdapter = adapter
         }
 
         mSpinKit = v.findViewById(R.id.spinKit)
@@ -70,16 +70,16 @@ class GalleryFragment : Fragment(), IGalleryView {
     }
 
     override fun onImagesFetched(imageSources: List<ImageSource>) {
-        galleryListAdapter.imageSources = imageSources.toMutableList()
-        galleryListAdapter.notifyDataSetChanged()
+        favoriteListAdapter.imageSources = imageSources.toMutableList()
+        favoriteListAdapter.notifyDataSetChanged()
         recyclerView.addOnScrollListener(listener)
         mSpinKit.visibility = View.GONE
     }
 
     override fun onMoreImagesFetched(imageSources: List<ImageSource>) {
-        val itemsCount = galleryListAdapter.imageSources.size - 1
-        galleryListAdapter.imageSources.addAll(imageSources)
-        galleryListAdapter.notifyDataSetChanged()
+        val itemsCount = favoriteListAdapter.imageSources.size - 1
+        favoriteListAdapter.imageSources.addAll(imageSources)
+        favoriteListAdapter.notifyDataSetChanged()
         recyclerView.post {
             recyclerView.smoothScrollToPosition(itemsCount + 6)
         }
