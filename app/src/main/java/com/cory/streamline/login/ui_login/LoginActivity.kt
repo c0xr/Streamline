@@ -108,6 +108,8 @@ class LoginActivity : AppCompatActivity() {
             animator.setDuration(350).start()
         }
 
+        supportActionBar?.title = "登录"
+
     }
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome) + model.displayName

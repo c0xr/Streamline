@@ -14,7 +14,7 @@ import com.cory.streamline.util.SOURCE_WALLHAVEN
 
 class FavoriteActivity : AppCompatActivity() {
     companion object {
-        fun newIntent(context: Context) = Intent(context,FavoriteActivity::class.java)
+        fun newIntent(context: Context) = Intent(context, FavoriteActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,8 @@ class FavoriteActivity : AppCompatActivity() {
                 favoriteFragment,
                 MainActivity.FRAGMENT_GALLERY_TAG
             )
-            .addToBackStack(MainActivity.FRAGMENT_GALLERY_TAG)
             .commit()
+
+        supportActionBar?.title = "收藏图片"
     }
 }

@@ -19,11 +19,15 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".favorite.FavoriteActivity"></activity>
+        <activity
+                android:name=".favorite.FavoriteActivity"
+                android:parentActivityName=".home.MainActivity" />
         <activity
                 android:name=".detail.SubsampleActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name=".login.ui_login.LoginActivity" />
+        <activity
+                android:name=".login.ui_login.LoginActivity"
+                android:parentActivityName=".home.MainActivity" />
         <activity
                 android:name=".home.MainActivity"
                 android:label="@string/app_name"

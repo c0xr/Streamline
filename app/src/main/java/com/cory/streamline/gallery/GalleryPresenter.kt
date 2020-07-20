@@ -47,6 +47,7 @@ class GalleryPresenter(
 
                 override fun onSubscribe(d: Disposable) {
                     log("onSubscribe")
+                    disposable = d
                 }
 
                 override fun onNext(t: Fetchable) {
