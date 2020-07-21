@@ -1,5 +1,6 @@
 package com.cory.streamline.detail
 
+import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
@@ -18,6 +19,7 @@ import com.cory.streamline.R
 import com.cory.streamline.model.remote.RemoteService
 import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.retrofit.ServiceGenerator
+import com.cory.streamline.setting.LayoutCustomActivity
 import com.cory.streamline.util.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -55,7 +57,12 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_detail, container, false)
+        val sp = activity!!.getSharedPreferences(
+            LayoutCustomActivity.SP_KEY,
+            Context.MODE_PRIVATE
+        )
+        val layoutId = sp.getInt(LayoutCustomActivity.ELEMENT_KEY, R.layout.fragment_detail)
+        val v = inflater.inflate(layoutId, container, false)
         val imageView = v.findViewById<ImageView>(R.id.imageView)
         val saveButton = v.findViewById<Button>(R.id.save)
         val favoriteButton = v.findViewById<Button>(R.id.favorite)
@@ -80,7 +87,7 @@ class DetailFragment : Fragment() {
         }
         imageView.setOnClickListener {
             startActivity(
-                SubsampleActivity.newIntent(activity!!,imageSource.fullSizeImage)
+                SubsampleActivity.newIntent(activity!!, imageSource.fullSizeImage)
             )
         }
         categoryTextView.text = "分类：${imageSource.category}"

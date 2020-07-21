@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple android:color="@color/rippleBlue" xmlns:android="http://schemas.android.com/apk/res/android">
+<ripple android:color="@color/blue" xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/mask"
             android:drawable="@drawable/bg_nav_login_button" >
     </item>

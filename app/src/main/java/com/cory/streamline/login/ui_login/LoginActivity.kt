@@ -18,7 +18,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cory.streamline.R
 import com.cory.streamline.login.data.model.LoggedInUser
-import com.cory.streamline.util.initLoginContext
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -29,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        initLoginContext(applicationContext)
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
