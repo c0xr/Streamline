@@ -17,8 +17,8 @@ import com.cory.streamline.favorite.FavoriteActivity
 import com.cory.streamline.history.HistoryActivity
 import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.setting.SettingActivity
-import com.cory.streamline.util.globalContext
 import com.google.android.material.navigation.NavigationView
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     companion object {
@@ -87,14 +87,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_gallery -> {
-                val intent = Intent()
-                intent.action = Intent.ACTION_VIEW
-                intent.type = "image/*"
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                true
-            }
+//            R.id.action_gallery -> {
+//                val intent = Intent()
+//                intent.action = Intent.ACTION_VIEW
+//                intent.type = "image/*"
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                startActivity(intent)
+//                true
+//            }
             R.id.action_star -> {
                 startActivity(FavoriteActivity.newIntent(this))
                 true
@@ -120,4 +120,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
 }

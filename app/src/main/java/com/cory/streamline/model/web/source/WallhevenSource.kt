@@ -9,7 +9,7 @@ class WallhevenSource : WebSource<WallhevenRepo>(BASE_URL) {
     private var currentPagePopular = 1
 
     companion object {
-        private val BASE_URL = "https://wallhaven.cc/"
+        private const val BASE_URL = "https://wallhaven.cc/"
     }
 
     override fun getLatestImageUrls(): Observable<WallhevenRepo>? {

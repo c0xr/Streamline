@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.cory.streamline.R
 import com.cory.streamline.util.globalContext
-import com.cory.streamline.util.log
 import com.sackcentury.shinebuttonlib.ShineButton
-import kotlinx.android.synthetic.main.activity_layout_custom.*
 
 class LayoutCustomActivity : AppCompatActivity(), ShineButton.OnCheckedChangeListener {
     private lateinit var button: ShineButton
@@ -40,7 +38,7 @@ class LayoutCustomActivity : AppCompatActivity(), ShineButton.OnCheckedChangeLis
         button2.setOnCheckStateChangeListener(this)
         button3.setOnCheckStateChangeListener(this)
         button4.setOnCheckStateChangeListener(this)
-        setPreferState()
+        initPreferState()
     }
 
     override fun onCheckedChanged(view: View?, checked: Boolean) {
@@ -84,7 +82,7 @@ class LayoutCustomActivity : AppCompatActivity(), ShineButton.OnCheckedChangeLis
             .apply()
     }
 
-    private fun setPreferState() {
+    private fun initPreferState() {
         val sp = globalContext.getSharedPreferences(SP_KEY, Context.MODE_PRIVATE)
         when (sp.getInt(ELEMENT_KEY, R.layout.fragment_detail)) {
             R.layout.fragment_detail -> button.isChecked = true

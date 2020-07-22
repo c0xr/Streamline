@@ -10,6 +10,18 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:fontFamily">@font/cabin</item>
+        <item name="android:windowAnimationStyle">@style/ActivityTransition</item>
+    </style>
+
+    <style name="ActivityTransition" parent="@android:style/Animation.Activity">
+<!--        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>-->
+<!--        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>-->
+        <!--栈顶活动的动画-->
+        <item name="android:activityCloseExitAnimation">@anim/activity_slide_out</item>
+        <item name="android:activityOpenEnterAnimation">@anim/activity_slide_in</item>
+        <!--栈顶之下活动的动画-->
+        <item name="android:activityCloseEnterAnimation">@anim/activity_show</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_hide</item>
     </style>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
