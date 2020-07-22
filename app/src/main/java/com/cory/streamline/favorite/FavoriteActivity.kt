@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cory.streamline.R
+import com.cory.streamline.gallery.GalleryFragment
+import com.cory.streamline.history.HistoryFragment
 import com.cory.streamline.home.HomeActivity
 import com.cory.streamline.util.SOURCE_WALLHAVEN
 
@@ -16,8 +18,7 @@ class FavoriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
-
-        val favoriteFragment = FavoriteFragment.newInstance(SOURCE_WALLHAVEN)
+        val favoriteFragment = GalleryFragment.newInstance(SOURCE_WALLHAVEN)
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.animator.anim_fragment_start,
@@ -31,7 +32,6 @@ class FavoriteActivity : AppCompatActivity() {
                 HomeActivity.FRAGMENT_GALLERY_TAG
             )
             .commit()
-
         supportActionBar?.title = "我的收藏"
     }
 }
