@@ -14,10 +14,8 @@ class RegisterViewModel : ViewModel() {
         }
     private val _registerFromState= MutableLiveData<RegisterFromState>()
 
-    fun registerDataChanged(username: String,nickname:String,password: String,repeat: String){
-        if (!isNicknameValid(nickname)){
-            _registerFromState.value=RegisterFromState(nicknameError = R.string.invalid_nickname)
-        }else if (!isUserNameValid(username)){
+    fun registerDataChanged(username: String,password: String,repeat: String){
+       if (!isUserNameValid(username)){
             _registerFromState.value= RegisterFromState(usernameError = R.string.invalid_username)
         }else if (!isPasswordValid(password)){
             _registerFromState.value= RegisterFromState(passwordError = R.string.invalid_password)
@@ -39,9 +37,7 @@ class RegisterViewModel : ViewModel() {
         return password.length in 6..15
     }
 
-    private fun isNicknameValid(password: String): Boolean {
-        return password.length in 1..25
-    }
+
 
     private fun isPasswordMatched(password: String,repeat:String):Boolean{
         return password==repeat

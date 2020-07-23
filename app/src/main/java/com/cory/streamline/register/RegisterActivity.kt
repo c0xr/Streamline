@@ -1,6 +1,5 @@
 package com.cory.streamline.register
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -14,17 +13,13 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cory.streamline.R
-import com.cory.streamline.login.data.model.LoggedInUser
 import com.cory.streamline.register.model.User
 import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.style.CubeGrid
-import com.github.ybq.android.spinkit.style.DoubleBounce
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-import java.util.*
+
 
 class RegisterActivity : AppCompatActivity() {
     private val TAG="registerTag"
@@ -35,7 +30,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val nickname:TextView=findViewById(R.id.nickname)
         val username:TextView=findViewById(R.id.username_r)
         val password:TextView=findViewById(R.id.password_r)
         val repeat:TextView=findViewById(R.id.confirm_password)
@@ -49,7 +43,6 @@ class RegisterActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 registerViewModel.registerDataChanged(
                     username.text.toString(),
-                    nickname.text.toString(),
                     password.text.toString(),
                     repeat.text.toString()
                 )
@@ -65,7 +58,6 @@ class RegisterActivity : AppCompatActivity() {
 
         }
         username.addTextChangedListener(afterTextChangedListener)
-        nickname.addTextChangedListener(afterTextChangedListener)
         password.addTextChangedListener(afterTextChangedListener)
         repeat.addTextChangedListener(afterTextChangedListener)
         registerViewModel.registerFromState.observe(this, Observer {
@@ -74,9 +66,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@Observer
             }
             registerButton.isEnabled=registerFormState.isDataValid
-            registerFormState.nicknameError?.let {
-                nickname.error=getString(it)
-            }
+
             registerFormState.usernameError?.let {
                 username.error=getString(it)
             }
@@ -91,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
         })
 
         registerButton.setOnClickListener {
-            user= User(nickname.text.toString(),username.text.toString(),password.text.toString())
+            user= User(username.text.toString(),password.text.toString())
             registerProgress.visibility=View.VISIBLE
             register(user)
             val x=registerButton.width/2
@@ -107,7 +97,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun register(user: User){
         val okHttpClient=OkHttpClient()
-        val requestBody=FormBody.Builder().add("nickname",user.nickname)
+        val requestBody=FormBody.Builder()
             .add("username",user.username).add("password",user.password).build()
         val request=Request.Builder().url("https://run.mocky.io/v3/09").post(requestBody).build()
         okHttpClient.newCall(request).enqueue(object :Callback{

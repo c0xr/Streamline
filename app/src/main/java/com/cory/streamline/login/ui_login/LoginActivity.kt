@@ -1,6 +1,7 @@
 package com.cory.streamline.login.ui_login
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -9,16 +10,15 @@ import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cory.streamline.R
 import com.cory.streamline.login.data.model.LoggedInUser
-import com.cory.streamline.util.initLoginContext
+import com.cory.streamline.register.RegisterActivity
+import com.cory.streamline.util.toast
+import com.github.ybq.android.spinkit.style.CubeGrid
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -26,10 +26,11 @@ import java.io.IOException
 class LoginActivity : AppCompatActivity() {
     private val TAG="myTag"
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var loadingProgressBar:ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        initLoginContext(applicationContext)
+
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
@@ -40,7 +41,10 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.login)
 
 
-        val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
+        loadingProgressBar = findViewById(R.id.login_progress)
+        loadingProgressBar.indeterminateDrawable= CubeGrid()
+
+        val registerText:TextView=findViewById(R.id.register)
 
 
 
@@ -58,17 +62,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
 
-        loginViewModel.loginResult.observe(this,
-            Observer { loginResult ->
-                loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
-                loginResult.error?.let {
-                    showLoginFailed(it)
-                }
-                loginResult.success?.let {
-                    updateUiWithUser(it)
-                }
-            })
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -84,8 +77,7 @@ class LoginActivity : AppCompatActivity() {
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
                 )
-                asyncValidate(usernameEditText.text.toString(),
-                    passwordEditText.text.toString())
+
             }
         }
         usernameEditText.addTextChangedListener(afterTextChangedListener)
@@ -93,14 +85,17 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    loginViewModel.login()
+                loadingProgressBar.visibility=View.VISIBLE
+                login(usernameEditText.text.toString(),
+                    passwordEditText.text.toString())
             }
             false
         }
 
         loginButton.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
-                loginViewModel.login()
+            loadingProgressBar.visibility=View.VISIBLE
+            login(usernameEditText.text.toString(),
+                passwordEditText.text.toString())
             val x=loginButton.width/2
             val y=loginButton.height/2
             val r: Float=loginButton.width.toFloat()
@@ -108,20 +103,17 @@ class LoginActivity : AppCompatActivity() {
             animator.setDuration(350).start()
         }
 
+        registerText.setOnClickListener {
+            val intent=Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
         supportActionBar?.title = "登录"
 
     }
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(this, welcome, Toast.LENGTH_LONG).show()
-    }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
-    }
 
-    private fun asyncValidate(username: String, password: String){
+    private fun login(username: String, password: String){
         val okhttpClient= OkHttpClient()
         val requestBody= FormBody.Builder().add("username",username)
             .add("password",password).build()
@@ -138,22 +130,28 @@ class LoginActivity : AppCompatActivity() {
 
                     val gson= Gson()
                     val logged=gson.fromJson(resBody, LoggedInUser::class.java)
-
-                    val editor=getSharedPreferences("login_info", Context.MODE_PRIVATE)
-                        .edit()
-                    editor.putString("token",logged.token)
-                    editor.putString("name",logged.displayName)
-                    editor.putString("id",logged.userId)
-                    editor.apply()
-
+                    Log.d(TAG, logged.toString())
+                    if (logged.token!="null"){
+                        val editor=getSharedPreferences("login_info", Context.MODE_PRIVATE)
+                            .edit()
+                        editor.putString("token",logged.token)
+                        editor.putString("id",logged.userId)
+                        editor.apply()
+                        runOnUiThread {
+                            loadingProgressBar.visibility=View.GONE
+                            toast("登录成功！")
+                            finish()
+                        }
+                    }else{
+                        loadingProgressBar.visibility=View.GONE
+                        toast("登录失败！请检查账号与密码是否有误")
+                    }
 
                 }else{
-                    val editor=getSharedPreferences("login_info", Context.MODE_PRIVATE)
-                        .edit()
-                    editor.putString("token",null)
-                    editor.putString("name",null)
-                    editor.putString("id",null)
-                    editor.apply()
+                    runOnUiThread {
+                        loadingProgressBar.visibility=View.GONE
+                        toast("服务器错误")
+                    }
                 }
             }
         })

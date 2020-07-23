@@ -5,6 +5,5 @@ package com.cory.streamline.login.data.model
  */
 data class LoggedInUser(
     val userId: String,
-    val displayName: String,
     val token: String
 )
