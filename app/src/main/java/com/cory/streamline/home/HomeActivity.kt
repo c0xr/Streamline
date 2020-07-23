@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +17,8 @@ import com.cory.streamline.favorite.FavoriteActivity
 import com.cory.streamline.history.HistoryActivity
 import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.setting.SettingActivity
-import com.cory.streamline.util.initToast
 import com.google.android.material.navigation.NavigationView
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     companion object {
@@ -29,7 +28,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initToast(applicationContext)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -53,7 +51,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-        //fragment
         supportFragmentManager.findFragmentById(R.id.fragment_container)
             ?: supportFragmentManager.beginTransaction()
                 .add(
@@ -79,24 +76,20 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_gallery -> {
-                val intent = Intent()
-                intent.action = Intent.ACTION_VIEW
-                intent.type = "image/*"
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                true
-            }
+//            R.id.action_gallery -> {
+//                val intent = Intent()
+//                intent.action = Intent.ACTION_VIEW
+//                intent.type = "image/*"
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                startActivity(intent)
+//                true
+//            }
             R.id.action_star -> {
                 startActivity(FavoriteActivity.newIntent(this))
                 true
@@ -106,7 +99,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_history -> {
                 startActivity(HistoryActivity.newIntent(this))
@@ -122,4 +114,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
 }

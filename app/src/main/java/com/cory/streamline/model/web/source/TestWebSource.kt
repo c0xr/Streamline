@@ -5,7 +5,7 @@ import com.cory.streamline.model.web.repo.TestClosedRepo
 
 class TestWebSource : WebSource<TestClosedRepo>(BASE_URL) {
     companion object{
-        private val BASE_URL = "https://wallhaven.cc/"
+        private const val BASE_URL = "https://wallhaven.cc/"
     }
 
 }

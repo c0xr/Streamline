@@ -1,7 +1,6 @@
 package com.cory.streamline.login.ui_login
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -10,13 +9,15 @@ import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cory.streamline.R
 import com.cory.streamline.login.data.model.LoggedInUser
-import com.cory.streamline.register.RegisterActivity
 import com.cory.streamline.util.initLoginContext
 import com.google.gson.Gson
 import okhttp3.*
@@ -40,8 +41,6 @@ class LoginActivity : AppCompatActivity() {
 
 
         val loadingProgressBar = findViewById<ProgressBar>(R.id.loading)
-
-        val register:TextView=findViewById(R.id.register)
 
 
 
@@ -110,13 +109,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         supportActionBar?.title = "登录"
-
-        register.setOnClickListener {
-            val intent=Intent(this,RegisterActivity::class.java)
-            startActivity(intent)
-        }
-
-
 
     }
     private fun updateUiWithUser(model: LoggedInUserView) {

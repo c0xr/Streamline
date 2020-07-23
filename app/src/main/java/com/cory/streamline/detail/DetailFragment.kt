@@ -1,5 +1,6 @@
 package com.cory.streamline.detail
 
+import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.os.Environment
@@ -15,9 +16,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.cory.streamline.R
+import com.cory.streamline.home.HomeActivity
 import com.cory.streamline.model.remote.RemoteService
 import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.retrofit.ServiceGenerator
+import com.cory.streamline.setting.LayoutCustomActivity
+import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -32,8 +36,10 @@ class DetailFragment : Fragment() {
     private lateinit var transitionName: String
     private lateinit var imageSource: ImageSource
     private lateinit var ioThread: Thread
+    private var preferLayoutId: Int = 0
 
     companion object {
+        val FRAGMENT_DETAIL_TAG = "fragment detail tag"
         fun newInstance(transitionName: String, imageSource: ImageSource) =
             DetailFragment().apply {
                 arguments = Bundle().apply {
@@ -55,7 +61,8 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_detail, container, false)
+        preferLayoutId = getPreferLayoutId()
+        val v = inflater.inflate(preferLayoutId, container, false)
         val imageView = v.findViewById<ImageView>(R.id.imageView)
         val saveButton = v.findViewById<Button>(R.id.save)
         val favoriteButton = v.findViewById<Button>(R.id.favorite)
@@ -80,7 +87,7 @@ class DetailFragment : Fragment() {
         }
         imageView.setOnClickListener {
             startActivity(
-                SubsampleActivity.newIntent(activity!!,imageSource.fullSizeImage)
+                SubsampleActivity.newIntent(activity!!, imageSource.fullSizeImage)
             )
         }
         categoryTextView.text = "分类：${imageSource.category}"
@@ -90,6 +97,20 @@ class DetailFragment : Fragment() {
         fileSizeTextView.text = "大小：$sizeS MB"
 
         return v
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val fragment: Fragment? =
+            activity!!.supportFragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG)
+        val currentId = getPreferLayoutId()
+        log("on resume,on retach:fragment exist=${fragment != null} same id=${currentId==preferLayoutId}")
+        if (fragment != null && currentId != preferLayoutId) {
+            activity!!.supportFragmentManager.beginTransaction()
+                .detach(fragment)
+                .attach(fragment)
+                .commit()
+        }
     }
 
     private fun copyCache() {
@@ -141,6 +162,14 @@ class DetailFragment : Fragment() {
                     toast("发生了一些错误，收藏失败")
                 }
             }
+    }
+
+    private fun getPreferLayoutId(): Int {
+        val sp = activity!!.getSharedPreferences(
+            LayoutCustomActivity.SP_KEY,
+            Context.MODE_PRIVATE
+        )
+        return sp.getInt(LayoutCustomActivity.ELEMENT_KEY, R.layout.fragment_detail)
     }
 
 }

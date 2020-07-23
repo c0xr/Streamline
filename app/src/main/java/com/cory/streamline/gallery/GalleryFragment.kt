@@ -95,8 +95,8 @@ open class GalleryFragment : Fragment(), IGalleryView {
                 0,
                 R.animator.anim_fragment_end
             )
-            .add(R.id.fragment_container, fragment, "DetailFragment")
-            .addToBackStack("DetailFragment")
+            .add(R.id.fragment_container, fragment, DetailFragment.FRAGMENT_DETAIL_TAG)
+            .addToBackStack(DetailFragment.FRAGMENT_DETAIL_TAG)
             .commit()
     }
 
