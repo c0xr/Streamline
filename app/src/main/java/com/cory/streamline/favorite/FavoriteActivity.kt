@@ -8,6 +8,8 @@ import com.cory.streamline.R
 import com.cory.streamline.gallery.GalleryFragment
 import com.cory.streamline.history.HistoryFragment
 import com.cory.streamline.home.HomeActivity
+import com.cory.streamline.util.CATEGORY_FAVORITE
+import com.cory.streamline.util.SOURCE_FAVORITE
 import com.cory.streamline.util.SOURCE_WALLHAVEN
 
 class FavoriteActivity : AppCompatActivity() {
@@ -18,7 +20,8 @@ class FavoriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
-        val favoriteFragment = GalleryFragment.newInstance(SOURCE_WALLHAVEN)
+        val favoriteFragment =
+            GalleryFragment.newInstance(SOURCE_FAVORITE, CATEGORY_FAVORITE)
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.animator.anim_fragment_start,

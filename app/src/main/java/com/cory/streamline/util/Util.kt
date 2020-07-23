@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.cory.streamline.model.exception.SourceNotFoundException
+import com.cory.streamline.model.remote.RemoteRepo
+import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.model.web.source.WallhevenSource
 import java.lang.ref.WeakReference
@@ -20,21 +22,26 @@ const val SOURCE_PIXABAY = "PixabaySource"
 const val SOURCE_FREEPIK = "FreepikSource"
 const val SOURCE_UNSPLASH = "UnsplashSource"
 const val SOURCE_FAVORITE = "FavoriteSource"
+const val SOURCE_HISTORY = "HistorySource"
 const val CATEGORY_LATEST = "Latest"
 const val CATEGORY_POPULAR = "Popular"
+const val CATEGORY_FAVORITE = "FavoriteSource"
+const val CATEGORY_HISTORY = "HistorySource"
 
 fun log(o: Any?) {
     Log.i(TAG, o?.toString() ?: "Object logged is null")
 }
 
 fun toast(o: Any?) {
-    Toast.makeText(globalContext, o?.toString() ?: "Object toasted is null", Toast.LENGTH_LONG)
+    Toast.makeText(globalContext, o?.toString() ?: "Object toasted is null", Toast.LENGTH_SHORT)
         .show()
 }
 
-fun createWebSourceBy(sourceString: String): WebSource<*> {
+fun createWebSourceBy(sourceString: String): WebSource<*, *> {
     return when (sourceString) {
         SOURCE_WALLHAVEN -> WallhevenSource()
+        SOURCE_HISTORY -> RemoteSource
+        SOURCE_FAVORITE -> RemoteSource
         else -> throw SourceNotFoundException(sourceString)
     }
 }

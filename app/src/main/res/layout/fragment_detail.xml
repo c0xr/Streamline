@@ -124,6 +124,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/blue"
+                            android:clickable="false"
                             android:text="收藏"
                             android:textColor="@color/white" />
 

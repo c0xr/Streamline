@@ -127,6 +127,7 @@
                             android:layout_weight="1"
                             android:backgroundTint="@color/blue"
                             android:text="收藏"
+                            android:clickable="false"
                             android:textColor="@color/white" />
 
                 </LinearLayout>

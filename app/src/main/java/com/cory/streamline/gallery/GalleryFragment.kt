@@ -11,9 +11,11 @@ import com.cory.streamline.R
 import com.cory.streamline.detail.DetailFragment
 import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.util.CATEGORY_POPULAR
+import com.cory.streamline.util.SOURCE_WALLHAVEN
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.SpinKitView
+import kotlin.IllegalArgumentException
 
 
 open class GalleryFragment : Fragment(), IGalleryView {
@@ -26,19 +28,41 @@ open class GalleryFragment : Fragment(), IGalleryView {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
                 recyclerView.removeOnScrollListener(this)
-                galleryPresenter.getPopularResults(false)
-                toast("fetching more images..")
+                galleryPresenter.fetchingImages(false)
                 log("fetching more images..")
             }
         }
     }
 
+    companion object {
+        private const val ARG_SOURCE_STRING = "sourceString"
+        private const val ARG_CATEGORY = "category"
+        fun newInstance(
+            sourceString: String,
+            category: String = CATEGORY_POPULAR
+        ): GalleryFragment {
+            val bundle = Bundle()
+            bundle.putString(ARG_SOURCE_STRING, sourceString)
+            bundle.putString(ARG_CATEGORY, category)
+            val fragment = GalleryFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sourceString = arguments?.getString(ARG_SOURCE_STRING, "")
+            ?: throw IllegalArgumentException("argument is null")
+        val category = arguments?.getString(ARG_CATEGORY, "")
+            ?: throw IllegalArgumentException("argument is null")
+        if (sourceString == "" || category == "") {
+            throw IllegalArgumentException("sourceString or category is null")
+        }
         galleryPresenter = GalleryPresenter(
             this,
-            arguments?.getSerializable(ARG_WEB_NAME).toString(),
-            CATEGORY_POPULAR
+            sourceString,
+            category
         )
     }
 
@@ -54,11 +78,10 @@ open class GalleryFragment : Fragment(), IGalleryView {
         if (adapter == null) {
             favoriteListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
             recyclerView.adapter = favoriteListAdapter
-            galleryPresenter.getPopularResults(true)
+            galleryPresenter.fetchingImages(true)
         } else {
             favoriteListAdapter = adapter
         }
-
         mSpinKit = v.findViewById(R.id.spinKit)
         mSpinKit.visibility = View.VISIBLE
         return v
@@ -77,12 +100,8 @@ open class GalleryFragment : Fragment(), IGalleryView {
     }
 
     override fun onMoreImagesFetched(imageSources: List<ImageSource>) {
-        val itemsCount = favoriteListAdapter.imageSources.size - 1
         favoriteListAdapter.imageSources.addAll(imageSources)
         favoriteListAdapter.notifyDataSetChanged()
-        recyclerView.post {
-            recyclerView.smoothScrollToPosition(itemsCount + 6)
-        }
         recyclerView.addOnScrollListener(listener)
     }
 
@@ -100,14 +119,4 @@ open class GalleryFragment : Fragment(), IGalleryView {
             .commit()
     }
 
-    companion object {
-        val ARG_WEB_NAME = "webName"
-        fun newInstance(webName: String): GalleryFragment {
-            val bundle = Bundle()
-            bundle.putSerializable(ARG_WEB_NAME, webName)
-            val fragment = GalleryFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
 }

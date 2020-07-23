@@ -2,6 +2,7 @@ package com.cory.streamline.gallery
 
 
 import com.cory.streamline.model.exception.CategoryNotFoundException
+import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.web.Fetchable
 import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.util.*
@@ -14,22 +15,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class GalleryPresenter(
     private var galleryView: IGalleryView?,
-    private val sourceString: String,
+    sourceString: String,
     private val category: String
 ) : IGalleryPresenter {
     private var disposable: Disposable? = null
-    private val source: WebSource<*> = createWebSourceBy(sourceString)
+    private val source: WebSource<*, *> = createWebSourceBy(sourceString)
 
-    override fun getLatestResults(isInitial: Boolean) {
-        val observables =
-            source.getLatestImageUrls() ?: throw CategoryNotFoundException("latest")
-        executeUrls(observables, isInitial)
-    }
-
-    override fun getPopularResults(isInitial: Boolean) {
-        val observables =
-            source.getPopularImageUrls() ?: throw CategoryNotFoundException("popular")
-        executeUrls(observables, isInitial)
+    override fun fetchingImages(isInitial: Boolean) {
+        when (category) {
+            CATEGORY_LATEST -> getLatestResults(isInitial)
+            CATEGORY_POPULAR -> getPopularResults(isInitial)
+            CATEGORY_FAVORITE -> getFavoriteRecords(isInitial)
+            CATEGORY_HISTORY -> getHistoryRecords(isInitial)
+            else -> throw CategoryNotFoundException(category)
+        }
     }
 
     override fun onDestroy() {
@@ -37,22 +36,44 @@ class GalleryPresenter(
         galleryView = null
     }
 
+    private fun getLatestResults(isInitial: Boolean) {
+        val observables =
+            source.getLatestImageUrls() ?: throw CategoryNotFoundException("latest")
+        executeUrls(observables, isInitial)
+    }
+
+    private fun getPopularResults(isInitial: Boolean) {
+        val observables =
+            source.getPopularImageUrls() ?: throw CategoryNotFoundException("popular")
+        executeUrls(observables, isInitial)
+    }
+
+    private fun getFavoriteRecords(isInitial: Boolean) {
+        val observables =
+            source.getFavoriteImageUrls() ?: throw CategoryNotFoundException("favorite")
+        executeUrls(observables, isInitial)
+    }
+
+    private fun getHistoryRecords(isInitial: Boolean) {
+        val observables =
+            source.getHistoryImageUrls() ?: throw CategoryNotFoundException("history")
+        executeUrls(observables, isInitial)
+    }
+
     private fun executeUrls(observables: Observable<out Fetchable>, isInitial: Boolean) {
         observables.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Fetchable> {
                 override fun onComplete() {
-                    log("onComplete")
                 }
 
                 override fun onSubscribe(d: Disposable) {
-                    log("onSubscribe")
                     disposable = d
                 }
 
                 override fun onNext(t: Fetchable) {
                     val sources = t.getImageSources()
-                    sources.forEach { log("onNext,element:\n$it") }
+//                    sources.forEach { log("onNext,element:\n$it") }
                     if (isInitial) {
                         galleryView?.onImagesFetched(sources)
                     } else {

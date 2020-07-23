@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cory.streamline.R
 import com.cory.streamline.home.HomeActivity
+import com.cory.streamline.util.CATEGORY_HISTORY
+import com.cory.streamline.util.SOURCE_FAVORITE
+import com.cory.streamline.util.SOURCE_HISTORY
 import com.cory.streamline.util.SOURCE_WALLHAVEN
 
 class HistoryActivity : AppCompatActivity() {
@@ -16,7 +19,8 @@ class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
-        val historyFragment = HistoryFragment.newInstance(SOURCE_WALLHAVEN)
+        val historyFragment =
+            HistoryFragment.newInstance(SOURCE_HISTORY, CATEGORY_HISTORY)
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.animator.anim_fragment_start,

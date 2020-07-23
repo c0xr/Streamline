@@ -12,7 +12,9 @@ import android.widget.SimpleAdapter
 import androidx.fragment.app.Fragment
 import com.cory.streamline.R
 import com.cory.streamline.gallery.GalleryFragment
+import com.cory.streamline.util.SOURCE_UNSPLASH
 import com.cory.streamline.util.SOURCE_WALLHAVEN
+import com.cory.streamline.util.toast
 import java.lang.IllegalStateException
 import java.util.ArrayList
 
@@ -39,8 +41,12 @@ class HomeFragment : Fragment() {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val sourceString = when (position) {
                     0 -> SOURCE_WALLHAVEN
-                    1 -> SOURCE_WALLHAVEN
+                    1 -> SOURCE_UNSPLASH
                     else -> throw IllegalStateException("GirdView index $position out of bounds")
+                }
+                if(sourceString== SOURCE_UNSPLASH) {
+                    toast("站点对接中，暂时不能使用")
+                    return@OnItemClickListener
                 }
                 val galleryFragment = GalleryFragment.newInstance(sourceString)
                 activity!!.supportFragmentManager.beginTransaction()

@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cory.streamline.R
 import com.cory.streamline.gallery.GalleryFragment
+import com.cory.streamline.util.CATEGORY_POPULAR
 
 class HistoryFragment : GalleryFragment() {
     companion object {
-        val ARG_WEB_NAME = "webName"
-        fun newInstance(webName: String): HistoryFragment {
+        private const val ARG_SOURCE_STRING = "sourceString"
+        private const val ARG_CATEGORY = "category"
+        fun newInstance(
+            sourceString: String,
+            category: String = CATEGORY_POPULAR
+        ): HistoryFragment {
             val bundle = Bundle()
-            bundle.putSerializable(ARG_WEB_NAME, webName)
+            bundle.putString(ARG_SOURCE_STRING, sourceString)
+            bundle.putString(ARG_CATEGORY, category)
             val fragment = HistoryFragment()
             fragment.arguments = bundle
             return fragment
@@ -36,7 +42,7 @@ class HistoryFragment : GalleryFragment() {
                     activity!!
                 )
             recyclerView.adapter = favoriteListAdapter
-            galleryPresenter.getPopularResults(true)
+            galleryPresenter.fetchingImages(true)
         } else {
             favoriteListAdapter = adapter
         }

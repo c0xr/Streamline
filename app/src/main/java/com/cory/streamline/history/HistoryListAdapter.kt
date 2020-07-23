@@ -16,15 +16,13 @@ class HistoryListAdapter(imageSources: MutableList<ImageSource>, context: Contex
         var textView: TextView = itemView.findViewById(R.id.time)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThumbnailHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder {
         val inflater = LayoutInflater.from(parent.context)
         val v = inflater.inflate(R.layout.item_view_history, parent, false)
-        return HistoryImageHolder(
-            v
-        )
+        return HistoryImageHolder(v)
     }
 
-    override fun onBindViewHolder(holder: ThumbnailHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val source = imageSources[position]
         val historyImageHolder = holder as HistoryImageHolder
