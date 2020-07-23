@@ -48,7 +48,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="感谢使用Streamline   Sincerely thanks!"
+            android:text="感谢使用Streamline!"
             android:textColor="@color/subtextGrey"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"

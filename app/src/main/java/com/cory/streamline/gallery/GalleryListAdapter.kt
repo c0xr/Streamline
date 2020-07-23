@@ -24,14 +24,16 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-private const val VIEW_TYPE_COMMON = 0
-private const val VIEW_TYPE_FOOTER = 1
-
 open class GalleryListAdapter(
     var imageSources: MutableList<ImageSource>,
     private val context: Context
 ) :
     RecyclerView.Adapter<GalleryListAdapter.BaseHolder>() {
+
+    companion object{
+        const val VIEW_TYPE_COMMON = 0
+        const val VIEW_TYPE_FOOTER = 1
+    }
 
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }

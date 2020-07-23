@@ -1,6 +1,7 @@
 package com.cory.streamline.detail
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.os.Environment
 import com.bumptech.glide.Glide
@@ -22,6 +23,12 @@ class DetailPresenter(
 ) : IDetailPresenter {
     private lateinit var ioThread: Thread
 
+    companion object {
+        private val PICTURE_DIRECTORY =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).path +
+                    "/Streamline/"
+    }
+
     override fun copyCache(fullSizeUrl: String) {
         if (!this::ioThread.isInitialized || !ioThread.isAlive) {
             ioThread = Thread() {
@@ -34,10 +41,7 @@ class DetailPresenter(
                 val date = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH)}" +
                         "-${calendar.get(Calendar.DAY_OF_MONTH)}"
                 val newName = "${date}-${file.name.substring(0..5)}.jpg"
-                val newFile = File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    newName
-                )
+                val newFile = File(PICTURE_DIRECTORY + newName)
                 if (!newFile.exists()) {
                     file.copyTo(newFile)
                     (detailView as DetailFragment).activity?.runOnUiThread {
