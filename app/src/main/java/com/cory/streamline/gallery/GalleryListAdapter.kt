@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,13 +30,18 @@ open class GalleryListAdapter(
     private val context: Context
 ) :
     RecyclerView.Adapter<GalleryListAdapter.BaseHolder>() {
+    var info = INFO_LOADABLE
 
-    companion object{
+    companion object {
         const val VIEW_TYPE_COMMON = 0
         const val VIEW_TYPE_FOOTER = 1
+        const val INFO_LOADABLE = "上拉加载更多"
+        const val INFO_LOADING = "加载中..."
+        const val INFO_LOADED = "没有更多了"
     }
 
     open class BaseHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val infoText = itemView.findViewById<TextView>(R.id.info)
     }
 
     open class ThumbnailHolder(
@@ -109,7 +115,10 @@ open class GalleryListAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
-        if (holder !is ThumbnailHolder) return
+        if (holder !is ThumbnailHolder) {
+            holder.infoText.text = info
+            return
+        }
 
         val source = imageSources[position]
         val imageView = holder.imageView

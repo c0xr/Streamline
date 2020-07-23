@@ -11,23 +11,24 @@ import com.cory.streamline.R
 import com.cory.streamline.detail.DetailFragment
 import com.cory.streamline.model.web.ImageSource
 import com.cory.streamline.util.CATEGORY_POPULAR
-import com.cory.streamline.util.SOURCE_WALLHAVEN
 import com.cory.streamline.util.log
-import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.SpinKitView
 import kotlin.IllegalArgumentException
 
 
 open class GalleryFragment : Fragment(), IGalleryView {
     protected lateinit var galleryPresenter: IGalleryPresenter
-    protected lateinit var favoriteListAdapter: GalleryListAdapter
+    protected lateinit var galleryListAdapter: GalleryListAdapter
     protected lateinit var recyclerView: RecyclerView
     protected lateinit var mSpinKit: SpinKitView
+    private var lastFetchingSize = 0
     private var listener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (!recyclerView.canScrollVertically(1)) {
                 recyclerView.removeOnScrollListener(this)
+                galleryListAdapter.info = GalleryListAdapter.INFO_LOADING
+                galleryListAdapter.notifyItemChanged(galleryListAdapter.imageSources.size)
                 galleryPresenter.fetchingImages(false)
                 log("fetching more images..")
             }
@@ -76,11 +77,11 @@ open class GalleryFragment : Fragment(), IGalleryView {
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         val adapter = recyclerView.adapter as GalleryListAdapter?
         if (adapter == null) {
-            favoriteListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
-            recyclerView.adapter = favoriteListAdapter
+            galleryListAdapter = GalleryListAdapter(mutableListOf(), activity!!)
+            recyclerView.adapter = galleryListAdapter
             galleryPresenter.fetchingImages(true)
         } else {
-            favoriteListAdapter = adapter
+            galleryListAdapter = adapter
         }
         mSpinKit = v.findViewById(R.id.spinKit)
         mSpinKit.visibility = View.VISIBLE
@@ -93,15 +94,24 @@ open class GalleryFragment : Fragment(), IGalleryView {
     }
 
     override fun onImagesFetched(imageSources: List<ImageSource>) {
-        favoriteListAdapter.imageSources = imageSources.toMutableList()
-        favoriteListAdapter.notifyDataSetChanged()
+        val list = imageSources.toMutableList()
+        galleryListAdapter.imageSources = list
+        lastFetchingSize = list.size
+        galleryListAdapter.notifyDataSetChanged()
         recyclerView.addOnScrollListener(listener)
         mSpinKit.visibility = View.GONE
     }
 
     override fun onMoreImagesFetched(imageSources: List<ImageSource>) {
-        favoriteListAdapter.imageSources.addAll(imageSources)
-        favoriteListAdapter.notifyDataSetChanged()
+        galleryListAdapter.imageSources.addAll(imageSources)
+        if (lastFetchingSize >= imageSources.size) {
+            galleryListAdapter.info = GalleryListAdapter.INFO_LOADABLE
+            recyclerView.removeOnScrollListener(listener)
+        } else {
+            galleryListAdapter.info = GalleryListAdapter.INFO_LOADED
+            lastFetchingSize = imageSources.size
+        }
+        galleryListAdapter.notifyDataSetChanged()
         recyclerView.addOnScrollListener(listener)
     }
 

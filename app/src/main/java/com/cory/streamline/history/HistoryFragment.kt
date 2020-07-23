@@ -36,15 +36,15 @@ class HistoryFragment : GalleryFragment() {
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         val adapter = recyclerView.adapter as HistoryListAdapter?
         if (adapter == null) {
-            favoriteListAdapter =
+            galleryListAdapter =
                 HistoryListAdapter(
                     mutableListOf(),
                     activity!!
                 )
-            recyclerView.adapter = favoriteListAdapter
+            recyclerView.adapter = galleryListAdapter
             galleryPresenter.fetchingImages(true)
         } else {
-            favoriteListAdapter = adapter
+            galleryListAdapter = adapter
         }
 
         mSpinKit = v.findViewById(R.id.spinKit)
