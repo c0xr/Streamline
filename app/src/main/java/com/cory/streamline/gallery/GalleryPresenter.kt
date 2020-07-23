@@ -2,7 +2,6 @@ package com.cory.streamline.gallery
 
 
 import com.cory.streamline.model.exception.CategoryNotFoundException
-import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.web.Fetchable
 import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.util.*

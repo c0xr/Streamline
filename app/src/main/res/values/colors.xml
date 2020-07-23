@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--主题色，白色，白色，白色-->
     <color name="colorPrimary">@color/nativeWhite</color>
     <color name="colorPrimaryDark">@color/nativeWhite</color>
     <color name="colorAccent">@color/nativeWhite</color>
+    <!--正文用，灰色-->
     <color name="white">#FFFFFF</color>
-    <color name="midnightBlue">#09154F</color>
+    <color name="black">#000000</color>
+    <!--副文用，灰色-->
+    <color name="subtextGrey">@android:color/darker_gray</color>
+    <!--布局背景用，安卓原生默认白色-->
+    <color name="nativeWhite">#FAFAFA</color>
+    <!--主题色，海蓝，亮蓝，午夜蓝-->
     <color name="blue">#1988F7</color>
     <color name="lightBlue">#92BEED</color>
+    <color name="midnightBlue">#09154F</color>
+    <!--水波纹用，半透明灰色-->
     <color name="rippleGrey">#80AEAEAE</color>
+    <!--全透明-->
     <color name="transparent">#00000000</color>
+    <!--大，小尺寸返回按钮，图标用，灰色，深灰色-->
     <color name="backIconGrey">#E8E8E8</color>
     <color name="backIconDarkGrey">#AAAAAA</color>
-    <color name="subtextGrey">@android:color/darker_gray</color>
-    <color name="black">#000000</color>
-    <color name="nativeWhite">#FAFAFA</color>
+
 </resources>

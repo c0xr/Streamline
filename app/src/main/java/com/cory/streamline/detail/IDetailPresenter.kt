@@ -1,6 +1,6 @@
 package com.cory.streamline.detail
 
-import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.model.ImageSource
 
 
 interface IDetailPresenter {

@@ -1,8 +1,7 @@
 package com.cory.streamline.model.remote
 
-import com.cory.streamline.model.web.ImageSource
-import com.cory.streamline.model.web.ImageWrapper
-import com.cory.streamline.model.web.repo.WallhevenRepo
+import com.cory.streamline.model.ImageWrapper
+import com.cory.streamline.model.RemoteResponse
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
 

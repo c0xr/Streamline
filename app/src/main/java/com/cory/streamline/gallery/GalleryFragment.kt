@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cory.streamline.R
 import com.cory.streamline.detail.DetailFragment
-import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.model.ImageSource
 import com.cory.streamline.util.CATEGORY_POPULAR
 import com.cory.streamline.util.log
 import com.github.ybq.android.spinkit.SpinKitView

@@ -1,4 +1,4 @@
-package com.cory.streamline.model.web
+package com.cory.streamline.model
 
 import java.io.Serializable
 

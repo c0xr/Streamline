@@ -1,25 +1,23 @@
 package com.cory.streamline.detail
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.os.Environment
 import com.bumptech.glide.Glide
 import com.cory.streamline.R
-import com.cory.streamline.model.remote.RemoteService
-import com.cory.streamline.model.web.ImageSource
-import com.cory.streamline.model.web.ImageWrapper
-import com.cory.streamline.retrofit.ServiceGenerator
+import com.cory.streamline.home.HomeActivity
+import com.cory.streamline.model.remote.RemoteSource
+import com.cory.streamline.model.ImageSource
+import com.cory.streamline.model.ImageWrapper
 import com.cory.streamline.setting.LayoutCustomActivity
 import com.cory.streamline.util.globalContext
-import com.cory.streamline.util.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.File
 import java.util.*
 
 class DetailPresenter(
-    private var detailView: IDetailView?
+    @Volatile private var detailView: IDetailView?
 ) : IDetailPresenter {
     private lateinit var ioThread: Thread
 
@@ -32,7 +30,9 @@ class DetailPresenter(
     override fun copyCache(fullSizeUrl: String) {
         if (!this::ioThread.isInitialized || !ioThread.isAlive) {
             ioThread = Thread() {
-                val file: File = Glide.with(detailView as DetailFragment)
+                val fragment = detailView as DetailFragment
+                val context = fragment.activity as HomeActivity? ?:return@Thread
+                val file: File = Glide.with(context)
                     .asFile()
                     .load(fullSizeUrl)
                     .submit()
@@ -44,18 +44,18 @@ class DetailPresenter(
                 val newFile = File(PICTURE_DIRECTORY + newName)
                 if (!newFile.exists()) {
                     file.copyTo(newFile)
-                    (detailView as DetailFragment).activity?.runOnUiThread {
+                    context.runOnUiThread {
                         MediaScannerConnection.scanFile(
-                            (detailView as DetailFragment).activity
+                            context
                             , arrayOf(newFile.path)
                             , arrayOf("image/jpeg")
                             , null
                         )
-                        detailView?.onCacheCopied(newFile.path, false)
+                        fragment.onCacheCopied(newFile.path, false)
                     }
                 } else {
-                    (detailView as DetailFragment).activity?.runOnUiThread {
-                        detailView?.onCacheCopied(newFile.path, true)
+                    context.runOnUiThread {
+                        fragment.onCacheCopied(newFile.path, true)
                     }
                 }
             }
@@ -64,9 +64,10 @@ class DetailPresenter(
     }
 
     override fun saveToFavorite(imageSource: ImageSource) {
-        val wrapper = ImageWrapper("token", imageSource)
-        ServiceGenerator.createRemoteService(RemoteService::class.java)
-            .saveToFavorite(wrapper)
+        //TODO replace token use login util
+        val wrapper =
+            ImageWrapper("token", imageSource)
+        RemoteSource.saveToFavorite(wrapper)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -79,8 +80,8 @@ class DetailPresenter(
     }
 
     override fun deleteFromFavorite(thumbnailUrl: String) {
-        ServiceGenerator.createRemoteService(RemoteService::class.java)
-            .deleteFromFavorite("token", thumbnailUrl)
+        //TODO replace token use login util
+        RemoteSource.deleteFromFavorite("token", thumbnailUrl)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -93,8 +94,8 @@ class DetailPresenter(
     }
 
     override fun requireFavoriteState(thumbnailUrl: String) {
-        ServiceGenerator.createRemoteService(RemoteService::class.java)
-            .getFavoriteState("token", thumbnailUrl)
+        //TODO replace token use login util
+        RemoteSource.getFavoriteState("token", thumbnailUrl)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

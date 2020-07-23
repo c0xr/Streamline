@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.cory.streamline.R
 import com.cory.streamline.gallery.GalleryListAdapter
-import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.model.ImageSource
 
 class HistoryListAdapter(imageSources: MutableList<ImageSource>, context: Context) :
     GalleryListAdapter(imageSources, context) {

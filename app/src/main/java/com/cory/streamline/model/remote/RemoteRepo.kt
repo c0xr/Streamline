@@ -1,7 +1,6 @@
 package com.cory.streamline.model.remote
 
-import com.cory.streamline.model.web.ImageSource
-import com.cory.streamline.model.web.ImageWrapper
+import com.cory.streamline.model.ImageSource
 import com.cory.streamline.model.web.OpenWebRepo
 
 class RemoteRepo : OpenWebRepo() {

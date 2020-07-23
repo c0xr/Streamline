@@ -1,6 +1,6 @@
 package com.cory.streamline.model.web.repo
 
-import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.model.ImageSource
 import com.cory.streamline.model.web.OpenWebRepo
 
 class WallhevenRepo : OpenWebRepo() {

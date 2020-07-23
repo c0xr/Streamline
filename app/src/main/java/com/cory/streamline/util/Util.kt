@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.cory.streamline.model.exception.SourceNotFoundException
-import com.cory.streamline.model.remote.RemoteRepo
 import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.web.WebSource
 import com.cory.streamline.model.web.source.WallhevenSource

@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.cory.streamline.R
-import com.cory.streamline.model.web.ImageSource
+import com.cory.streamline.model.ImageSource
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 
@@ -158,8 +158,8 @@ class DetailFragment : Fragment(), IDetailView {
             val fragment: Fragment? =
                 activity!!.supportFragmentManager.findFragmentByTag(FRAGMENT_DETAIL_TAG)
             log(
-                "on resume,on retach:fragment exist=${fragment != null} " +
-                        "same id=${preferLayoutId == this.preferLayoutId}"
+                "重建详情碎片，碎片是否存在：${fragment != null} " +
+                        "布局id是否相同：${preferLayoutId == this.preferLayoutId}"
             )
             if (fragment != null && preferLayoutId != this.preferLayoutId) {
                 activity!!.supportFragmentManager.beginTransaction()

@@ -14,10 +14,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cory.streamline.R
 import com.cory.streamline.home.HomeActivity
-import com.cory.streamline.model.remote.RemoteResponse
+import com.cory.streamline.model.RemoteResponse
 import com.cory.streamline.model.remote.RemoteSource
-import com.cory.streamline.model.web.ImageSource
-import com.cory.streamline.model.web.ImageWrapper
+import com.cory.streamline.model.ImageSource
+import com.cory.streamline.model.ImageWrapper
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -65,7 +65,8 @@ open class GalleryListAdapter(
 
         private fun recordHistory(imageSource: ImageSource) {
             //TODO replace token use login util
-            val imageWrapper = ImageWrapper("token", imageSource)
+            val imageWrapper =
+                ImageWrapper("token", imageSource)
             RemoteSource.saveToHistory(imageWrapper)
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -77,7 +78,7 @@ open class GalleryListAdapter(
                     }
 
                     override fun onNext(t: RemoteResponse) {
-                        log("onNext,element:$t")
+                        log("成功获取响应，响应内容：${t.success}")
                     }
 
                     override fun onError(e: Throwable) {

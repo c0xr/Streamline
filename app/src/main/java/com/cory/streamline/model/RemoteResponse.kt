@@ -1,4 +1,4 @@
-package com.cory.streamline.model.remote
+package com.cory.streamline.model
 
 data class RemoteResponse(
     val success: Boolean
