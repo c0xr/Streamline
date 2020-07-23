@@ -1,5 +1,6 @@
 package com.cory.streamline.detail
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +70,21 @@ class DetailFragment : Fragment(), IDetailView {
             .transition(GenericTransitionOptions.with(R.anim.fade_in))
             .into(imageView)
         saveButton.setOnClickListener {
-            detailPresenter.copyCache(imageSource.fullSizeImage)
+            val name=activity?.packageName
+            val result=activity?.packageManager?.checkPermission(
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                name
+            )
+            if(result!=null){
+                if(result==PackageManager.PERMISSION_GRANTED){
+                    detailPresenter.copyCache(imageSource.fullSizeImage)
+                }else{
+                    toast("请开启Streamline的文件访问权限并重试")
+                }
+            }else{
+                log("发生了一些错误，保存失败")
+                toast("发生了一些错误，保存失败")
+            }
         }
         detailPresenter.requireFavoriteState(imageSource.thumbnailImage)
         favoriteButton.setOnClickListener {
