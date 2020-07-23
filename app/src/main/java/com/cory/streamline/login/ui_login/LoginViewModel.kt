@@ -1,6 +1,6 @@
 package com.cory.streamline.login.ui_login
 
-import android.content.Context
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,7 +42,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(username).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(username).matches()&&username.length<26
 
     }
 
