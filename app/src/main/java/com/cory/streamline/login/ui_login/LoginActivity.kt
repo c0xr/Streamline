@@ -11,13 +11,14 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cory.streamline.R
 import com.cory.streamline.login.data.model.LoggedInUser
 import com.cory.streamline.register.RegisterActivity
+import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
+import com.cory.streamline.util.user
 import com.github.ybq.android.spinkit.style.CubeGrid
 import com.google.gson.Gson
 import okhttp3.*
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -117,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
         val okhttpClient= OkHttpClient()
         val requestBody= FormBody.Builder().add("username",username)
             .add("password",password).build()
-        val request= Request.Builder().url("https://run.mocky.io/v3/09c08bb9-1174-45b2-bab6-3f025ef7803d")
+        val request= Request.Builder().url("http://192.168.0.106:8080/Streamline/LoginServlet")
             .post(requestBody).build()
         okhttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -127,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 if (response.toString().contains("200")){
                     val resBody= response.body?.string()
-
+                    log(resBody)
                     val gson= Gson()
                     val logged=gson.fromJson(resBody, LoggedInUser::class.java)
                     Log.d(TAG, logged.toString())
@@ -135,16 +137,19 @@ class LoginActivity : AppCompatActivity() {
                         val editor=getSharedPreferences("login_info", Context.MODE_PRIVATE)
                             .edit()
                         editor.putString("token",logged.token)
-                        editor.putString("id",logged.userId)
                         editor.apply()
+                        user=logged
                         runOnUiThread {
                             loadingProgressBar.visibility=View.GONE
                             toast("登录成功！")
                             finish()
                         }
                     }else{
-                        loadingProgressBar.visibility=View.GONE
-                        toast("登录失败！请检查账号与密码是否有误")
+                        runOnUiThread {
+                            loadingProgressBar.visibility=View.GONE
+                            toast("登录失败！请检查账号与密码是否有误")
+                        }
+
                     }
 
                 }else{

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cory.streamline.R
 import com.cory.streamline.register.model.User
+import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
 import com.github.ybq.android.spinkit.style.CubeGrid
 import okhttp3.*
@@ -99,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
         val okHttpClient=OkHttpClient()
         val requestBody=FormBody.Builder()
             .add("username",user.username).add("password",user.password).build()
-        val request=Request.Builder().url("https://run.mocky.io/v3/09").post(requestBody).build()
+        val request=Request.Builder().url("http://192.168.0.106:8080/Streamline/RegisterServlet").post(requestBody).build()
         okHttpClient.newCall(request).enqueue(object :Callback{
             override fun onFailure(call: Call, e: IOException) {
                 Log.d(TAG, "onFailure: ${e.message}")
@@ -109,6 +110,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (response.toString().contains("200")){
                     val resBody= response.body?.string()
                     var registerState="error"
+                    log(resBody)
                     val jsonObject=JSONObject(resBody)
                     if(resBody!=null){
                         registerState=jsonObject.getString("state")

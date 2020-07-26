@@ -1,6 +1,7 @@
 package com.cory.streamline.home
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -15,8 +16,10 @@ import com.cory.streamline.R
 import com.cory.streamline.about.AboutActivity
 import com.cory.streamline.favorite.FavoriteActivity
 import com.cory.streamline.history.HistoryActivity
+import com.cory.streamline.login.data.model.LoggedInUser
 import com.cory.streamline.login.ui_login.LoginActivity
 import com.cory.streamline.setting.SettingActivity
+import com.cory.streamline.util.user
 import com.google.android.material.navigation.NavigationView
 
 
@@ -28,6 +31,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val sharedPreferences=getSharedPreferences("login_info", Context.MODE_PRIVATE)
+        val token=sharedPreferences.getString("token",null)
+        token?.let {
+            user=LoggedInUser(token)
+        }
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)

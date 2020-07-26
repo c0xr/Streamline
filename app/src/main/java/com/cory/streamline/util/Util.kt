@@ -3,6 +3,7 @@ package com.cory.streamline.util
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.cory.streamline.login.data.model.LoggedInUser
 import com.cory.streamline.model.exception.SourceNotFoundException
 import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.web.WebSource
@@ -16,6 +17,7 @@ var globalContext
     set(value) {
         globalContextR = WeakReference(value)
     }
+var user: LoggedInUser? =null
 const val SOURCE_WALLHAVEN = "WallhevenSource"
 const val SOURCE_PIXABAY = "PixabaySource"
 const val SOURCE_FREEPIK = "FreepikSource"
@@ -36,6 +38,8 @@ fun toast(o: Any?) {
         .show()
 }
 
+
+
 fun createWebSourceBy(sourceString: String): WebSource<*, *> {
     return when (sourceString) {
         SOURCE_WALLHAVEN -> WallhevenSource()
@@ -43,4 +47,5 @@ fun createWebSourceBy(sourceString: String): WebSource<*, *> {
         SOURCE_FAVORITE -> RemoteSource
         else -> throw SourceNotFoundException(sourceString)
     }
+
 }
