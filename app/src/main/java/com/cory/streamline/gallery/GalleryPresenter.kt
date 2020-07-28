@@ -48,15 +48,21 @@ class GalleryPresenter(
     }
 
     private fun getFavoriteRecords(isInitial: Boolean) {
-        val observables =
-            source.getFavoriteImageUrls() ?: throw CategoryNotFoundException("favorite")
-        executeUrls(observables, isInitial)
+        val loggedUser = user
+        if (loggedUser != null) {
+            val observables =
+                source.getFavoriteImageUrls(loggedUser.token) ?: throw CategoryNotFoundException("favorite")
+            executeUrls(observables, isInitial)
+        }
     }
 
     private fun getHistoryRecords(isInitial: Boolean) {
-        val observables =
-            source.getHistoryImageUrls() ?: throw CategoryNotFoundException("history")
-        executeUrls(observables, isInitial)
+        val loggedUser = user
+        if (loggedUser != null) {
+            val observables =
+                source.getHistoryImageUrls(loggedUser.token) ?: throw CategoryNotFoundException("history")
+            executeUrls(observables, isInitial)
+        }
     }
 
     private fun executeUrls(observables: Observable<out Fetchable>, isInitial: Boolean) {

@@ -17,7 +17,7 @@ var globalContext
     set(value) {
         globalContextR = WeakReference(value)
     }
-var user: LoggedInUser? =null
+var user: LoggedInUser? = null
 const val SOURCE_WALLHAVEN = "WallhevenSource"
 const val SOURCE_PIXABAY = "PixabaySource"
 const val SOURCE_FREEPIK = "FreepikSource"
@@ -38,14 +38,17 @@ fun toast(o: Any?) {
         .show()
 }
 
-
-
 fun createWebSourceBy(sourceString: String): WebSource<*, *> {
     return when (sourceString) {
         SOURCE_WALLHAVEN -> WallhevenSource()
-        SOURCE_HISTORY -> RemoteSource
-        SOURCE_FAVORITE -> RemoteSource
+        SOURCE_HISTORY -> {
+            RemoteSource.reset()
+            RemoteSource
+        }
+        SOURCE_FAVORITE -> {
+            RemoteSource.reset()
+            RemoteSource
+        }
         else -> throw SourceNotFoundException(sourceString)
     }
-
 }

@@ -100,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
         val okHttpClient=OkHttpClient()
         val requestBody=FormBody.Builder()
             .add("username",user.username).add("password",user.password).build()
-        val request=Request.Builder().url("http://192.168.0.106:8080/Streamline/RegisterServlet").post(requestBody).build()
+        val request=Request.Builder().url("http://cory0511.xyz:8080/Streamline/RegisterServlet").post(requestBody).build()
         okHttpClient.newCall(request).enqueue(object :Callback{
             override fun onFailure(call: Call, e: IOException) {
                 Log.d(TAG, "onFailure: ${e.message}")

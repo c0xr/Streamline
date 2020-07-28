@@ -104,15 +104,16 @@ open class GalleryFragment : Fragment(), IGalleryView {
 
     override fun onMoreImagesFetched(imageSources: List<ImageSource>) {
         galleryListAdapter.imageSources.addAll(imageSources)
-        if (lastFetchingSize >= imageSources.size) {
-            galleryListAdapter.info = GalleryListAdapter.INFO_LOADABLE
+        if (lastFetchingSize > imageSources.size) {
+            galleryListAdapter.info = GalleryListAdapter.INFO_LOADED
             recyclerView.removeOnScrollListener(listener)
         } else {
-            galleryListAdapter.info = GalleryListAdapter.INFO_LOADED
+            galleryListAdapter.info = GalleryListAdapter.INFO_LOADABLE
             lastFetchingSize = imageSources.size
+            recyclerView.addOnScrollListener(listener)
         }
+        lastFetchingSize=imageSources.size
         galleryListAdapter.notifyDataSetChanged()
-        recyclerView.addOnScrollListener(listener)
     }
 
     fun startDetailFragment(transitionName: String, imageSource: ImageSource) {

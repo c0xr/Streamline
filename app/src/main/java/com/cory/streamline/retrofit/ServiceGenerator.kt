@@ -1,5 +1,9 @@
 package com.cory.streamline.retrofit
 
+import com.cory.streamline.util.log
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,11 +15,25 @@ object ServiceGenerator {
             field = value
             modified = true
         }
-    private const val remoteBaseUrl = "https://run.mocky.io/v3/"
+    private const val remoteBaseUrl = "http://cory0511.xyz:8080/"
+
+//    private val interceptor = object : Interceptor {
+//        override fun intercept(chain: Interceptor.Chain): Response {
+//            val request = chain.request()
+//            log(request.url)
+//            val response = chain.proceed(request)
+//            log(response.body?.string())
+//            return response
+//        }
+//
+//    }
+//
+//    private val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     private val builder = Retrofit.Builder()
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
+//        .client(okHttpClient)
 
     private lateinit var retrofitWeb: Retrofit
 

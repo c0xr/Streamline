@@ -20,10 +20,16 @@ import com.cory.streamline.model.ImageSource
 import com.cory.streamline.model.ImageWrapper
 import com.cory.streamline.util.log
 import com.cory.streamline.util.toast
+import com.cory.streamline.util.user
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.exceptions.UndeliverableException
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.IOException
+import java.net.SocketException
 
 open class GalleryListAdapter(
     var imageSources: MutableList<ImageSource>,
@@ -65,28 +71,30 @@ open class GalleryListAdapter(
 
         private fun recordHistory(imageSource: ImageSource) {
             //TODO replace token use login util
-            val imageWrapper =
-                ImageWrapper("token", imageSource)
-            RemoteSource.saveToHistory(imageWrapper)
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<RemoteResponse> {
-                    override fun onComplete() {
-                    }
+            val loggedUser = user
+            loggedUser?.let {
+                val imageWrapper = ImageWrapper(loggedUser.token, imageSource)
+                RemoteSource.saveToHistory(imageWrapper)
+                    .observeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<RemoteResponse> {
+                        override fun onComplete() {
+                        }
 
-                    override fun onSubscribe(d: Disposable) {
-                    }
+                        override fun onSubscribe(d: Disposable) {
+                        }
 
-                    override fun onNext(t: RemoteResponse) {
-                        log("成功获取响应，响应内容：${t.success}")
-                    }
+                        override fun onNext(t: RemoteResponse) {
+                            log("成功获取响应，响应内容：${t.success}")
+                        }
 
-                    override fun onError(e: Throwable) {
-                        log("onError:$e")
-                        toast("onError:$e")
-                    }
+                        override fun onError(e: Throwable) {
+                            log("onError:$e")
+                            toast("onError:$e")
+                        }
 
-                })
+                    })
+            }
         }
     }
 

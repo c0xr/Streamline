@@ -6,11 +6,15 @@ import android.os.Environment
 import com.bumptech.glide.Glide
 import com.cory.streamline.R
 import com.cory.streamline.home.HomeActivity
+import com.cory.streamline.login.data.model.LoggedInUser
 import com.cory.streamline.model.remote.RemoteSource
 import com.cory.streamline.model.ImageSource
 import com.cory.streamline.model.ImageWrapper
 import com.cory.streamline.setting.LayoutCustomActivity
 import com.cory.streamline.util.globalContext
+import com.cory.streamline.util.log
+import com.cory.streamline.util.toast
+import com.cory.streamline.util.user
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.File
@@ -31,7 +35,7 @@ class DetailPresenter(
         if (!this::ioThread.isInitialized || !ioThread.isAlive) {
             ioThread = Thread() {
                 val fragment = detailView as DetailFragment
-                val context = fragment.activity as HomeActivity? ?:return@Thread
+                val context = fragment.activity as HomeActivity? ?: return@Thread
                 val file: File = Glide.with(context)
                     .asFile()
                     .load(fullSizeUrl)
@@ -65,46 +69,57 @@ class DetailPresenter(
 
     override fun saveToFavorite(imageSource: ImageSource) {
         //TODO replace token use login util
-        val wrapper =
-            ImageWrapper("token", imageSource)
-        RemoteSource.saveToFavorite(wrapper)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.success) {
-                    detailView?.onFavoriteSaved(true)
-                } else {
-                    detailView?.onFavoriteSaved(false)
+        val loggedUser = user
+        if (loggedUser == null) {
+            toast("请先登录")
+        } else {
+            val wrapper =
+                ImageWrapper(loggedUser.token, imageSource)
+            RemoteSource.saveToFavorite(wrapper)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.success) {
+                        detailView?.onFavoriteSaved(true)
+                    } else {
+                        detailView?.onFavoriteSaved(false)
+                    }
                 }
-            }
+        }
     }
 
     override fun deleteFromFavorite(thumbnailUrl: String) {
         //TODO replace token use login util
-        RemoteSource.deleteFromFavorite("token", thumbnailUrl)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.success) {
-                    detailView?.onFavoriteDelete(true)
-                } else {
-                    detailView?.onFavoriteDelete(false)
+        val loggedUser = user
+        if (loggedUser != null) {
+            RemoteSource.deleteFromFavorite(loggedUser.token, thumbnailUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.success) {
+                        detailView?.onFavoriteDelete(true)
+                    } else {
+                        detailView?.onFavoriteDelete(false)
+                    }
                 }
-            }
+        }
     }
 
     override fun requireFavoriteState(thumbnailUrl: String) {
         //TODO replace token use login util
-        RemoteSource.getFavoriteState("token", thumbnailUrl)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.success) {
-                    detailView?.onFavoriteStateReceived(true)
-                } else {
-                    detailView?.onFavoriteStateReceived(false)
+        val loggedUser = user
+        if (loggedUser != null) {
+            RemoteSource.getFavoriteState(loggedUser.token, thumbnailUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it.success) {
+                        detailView?.onFavoriteStateReceived(it.isFavorite)
+                    } else {
+                        log("获得收藏状态：失败")
+                    }
                 }
-            }
+        }
     }
 
     override fun requirePreferLayoutId(isInitial: Boolean) {

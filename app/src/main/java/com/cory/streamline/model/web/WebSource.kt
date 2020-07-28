@@ -20,11 +20,11 @@ abstract class WebSource<T : Fetchable, out S>(serviceClass: Class<S>, baseUrl: 
         return null
     }
 
-    open fun getFavoriteImageUrls(): Observable<T>? {
+    open fun getFavoriteImageUrls(token: String): Observable<T>? {
         return null
     }
 
-    open fun getHistoryImageUrls(): Observable<T>? {
+    open fun getHistoryImageUrls(token: String): Observable<T>? {
         return null
     }
 }
