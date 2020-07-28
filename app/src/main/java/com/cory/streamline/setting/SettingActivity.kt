@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.widget.ListView
+import android.widget.TextView
 import com.cory.streamline.R
+import com.cory.streamline.util.toast
+import com.cory.streamline.util.user
 
 class SettingActivity : AppCompatActivity() {
     companion object {
@@ -32,6 +35,11 @@ class SettingActivity : AppCompatActivity() {
                 "自定义Wallpaper详情布局",
                 null,
                 R.drawable.ic_pencil_ruler
+            ),
+            SettingListAdapter.Option(
+                "退出登录",
+                null,
+                null
             )
         )
         listView.adapter = SettingListAdapter(this, list)

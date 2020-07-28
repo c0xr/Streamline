@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -24,6 +26,10 @@ import com.google.android.material.navigation.NavigationView
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var loginButton: Button
+    private lateinit var stateText: TextView
+    private lateinit var nickText: TextView
+
     companion object {
         val FRAGMENT_GALLERY_TAG = "fragment gallery tag"
     }
@@ -31,14 +37,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val sharedPreferences=getSharedPreferences("login_info", Context.MODE_PRIVATE)
-        val token=sharedPreferences.getString("token",null)
+        val sharedPreferences = getSharedPreferences("login_info", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null)
         token?.let {
-            user=LoggedInUser(token)
+            user = LoggedInUser(token)
         }
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+        stateText = navView.getHeaderView(0).findViewById(R.id.state)
+        nickText = navView.getHeaderView(0).findViewById(R.id.nick)
 
         setSupportActionBar(toolbar)
 
@@ -51,7 +59,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        val loginButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
+        loginButton = navView.getHeaderView(0).findViewById(R.id.login)
 
         loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -123,4 +131,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onResume() {
+        super.onResume()
+        val loggedUser = user
+        if (loggedUser == null) {
+            stateText.text = "离线"
+            nickText.text = "Streamline"
+            loginButton.visibility = View.VISIBLE
+        } else {
+            stateText.text = "在线"
+            nickText.text = "Streamline"
+            loginButton.visibility = View.GONE
+        }
+    }
 }
