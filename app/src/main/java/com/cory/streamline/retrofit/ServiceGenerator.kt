@@ -15,7 +15,7 @@ object ServiceGenerator {
             field = value
             modified = true
         }
-    private const val remoteBaseUrl = "http://cory0511.xyz:8080/"
+    private const val remoteBaseUrl = "http://cory0511.xyz/"
 
 //    private val interceptor = object : Interceptor {
 //        override fun intercept(chain: Interceptor.Chain): Response {

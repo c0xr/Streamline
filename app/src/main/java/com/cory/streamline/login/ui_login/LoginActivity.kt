@@ -119,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
         val okhttpClient= OkHttpClient()
         val requestBody= FormBody.Builder().add("username",username)
             .add("password",password).build()
-        val request= Request.Builder().url("http://cory0511.xyz:8080/Streamline/LoginServlet")
+        val request= Request.Builder().url("http://cory0511.xyz/Streamline/LoginServlet")
             .post(requestBody).build()
         okhttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
