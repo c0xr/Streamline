@@ -3,6 +3,7 @@ package com.cory.streamline.detail
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.cory.streamline.R
 import com.cory.streamline.home.HomeActivity
@@ -35,7 +36,8 @@ class DetailPresenter(
         if (!this::ioThread.isInitialized || !ioThread.isAlive) {
             ioThread = Thread() {
                 val fragment = detailView as DetailFragment
-                val context = fragment.activity as HomeActivity? ?: return@Thread
+                val context =
+                    fragment.activity as AppCompatActivity? ?: return@Thread
                 val file: File = Glide.with(context)
                     .asFile()
                     .load(fullSizeUrl)
