@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -27,6 +29,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     companion object {
         val FRAGMENT_GALLERY_TAG = "fragment gallery tag"
     }
+
+    private lateinit var loginButton:Button
+    private lateinit var loginState:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        val loginButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
+        loginButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_login)
 
         loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -59,6 +64,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        loginState=navView.getHeaderView(0).findViewById<Button>(R.id.login_state)
         supportFragmentManager.findFragmentById(R.id.fragment_container)
             ?: supportFragmentManager.beginTransaction()
                 .add(
@@ -123,4 +129,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (user!=null){
+            loginButton.isEnabled=false
+            loginButton.visibility=View.GONE
+            loginState.text="在线"
+        }else{
+            loginButton.isEnabled=true
+            loginButton.visibility=View.VISIBLE
+            loginState.text="离线"
+        }
+    }
 }

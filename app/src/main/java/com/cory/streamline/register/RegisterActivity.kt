@@ -118,9 +118,12 @@ class RegisterActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         when(registerState){
-                            "success"-> toast("注册成功！请登录")
                             "duplicate"-> toast("该邮箱已被注册！")
                             "error"-> toast("请检查网络连接")
+                        }
+                        if (registerState=="success"){
+                            toast("注册成功！请登录")
+                            finish()
                         }
                         registerProgress.visibility=View.GONE
                     }
