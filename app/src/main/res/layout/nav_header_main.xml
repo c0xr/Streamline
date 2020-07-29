@@ -37,7 +37,6 @@
                 android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nav_header_title"
@@ -45,7 +44,7 @@
                     android:textColor="@android:color/white" />
 
             <TextView
-                    android:id="@+id/nick"
+                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nav_header_subtitle"
@@ -53,7 +52,7 @@
         </LinearLayout>
 
         <Button
-                android:id="@+id/login"
+                android:id="@+id/button_login"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/nav_header_login_button_start_margin"
